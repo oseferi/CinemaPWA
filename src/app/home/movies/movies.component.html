@@ -1,0 +1,27 @@
+<h1 class="mat-h1">Movies</h1>
+<ul class="movies grid-with-gaps">
+  <li class="g-sm-12 g-md-6 g-lg-6" *ngFor="let movie of movies">
+    <mat-card>
+      <mat-card-header>
+        <div *ngIf="movie?.avatarUrl" mat-card-avatar class="mat-elevation-z1" style="background-size: cover" [style.backgroundImage]="getAvatarUrl(movie?.avatarUrl)"></div>
+        <mat-card-title>
+          <span>{{ movie?.name }}</span>
+          <span class="year">{{ movie?.year }}</span>
+        </mat-card-title>
+        <mat-card-subtitle>
+          <span>{{ movie?.category?.name }}</span>
+          <span>{{ movie?.duration }}</span>
+        </mat-card-subtitle>
+      </mat-card-header>
+      <div mat-card-image>
+        <img draggable="false" width="100%" [src]="movie?.thumbnailUrl" alt="Thumbnail">
+      </div>
+      <mat-card-content>
+        <p>{{ movie?.description }}</p>
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-button>Watch</button>
+      </mat-card-actions>
+    </mat-card>
+  </li>
+</ul>

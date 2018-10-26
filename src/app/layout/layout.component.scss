@@ -1,0 +1,37 @@
+@import '../../theme.scss';
+
+:host {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidenav-container {
+  flex: 1;
+  height: 100%;
+}
+
+.sidenav {
+  width: 200px;
+}
+
+.sidenav .mat-toolbar {
+  background: inherit;
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.mat-nav-list .mat-list-item {
+  text-transform: capitalize;
+  transition: color .2s ease;
+  .mat-icon {
+    margin-right: 12px;
+  }
+  &.active {
+    color: mat-color(map-get($theme, accent));
+  }
+}
