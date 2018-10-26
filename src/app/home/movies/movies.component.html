@@ -3,7 +3,7 @@
   <li class="g-sm-12 g-md-6 g-lg-6" *ngFor="let movie of movies">
     <mat-card>
       <mat-card-header>
-        <div *ngIf="movie?.avatarUrl" mat-card-avatar class="mat-elevation-z1" style="background-size: cover" [style.backgroundImage]="getAvatarUrl(movie?.avatarUrl)"></div>
+        <div *ngIf="movie?.avatarUrl" mat-card-avatar class="mat-elevation-z1" style="margin-right: 16px; background-size: cover;" [style.backgroundImage]="getAvatarUrl(movie?.avatarUrl)"></div>
         <mat-card-title>
           <span>{{ movie?.name }}</span>
           <span class="year">{{ movie?.year }}</span>
@@ -17,10 +17,15 @@
         <img draggable="false" width="100%" [src]="movie?.thumbnailUrl" alt="Thumbnail">
       </div>
       <mat-card-content>
-        <p>{{ movie?.description }}</p>
+          <h5 class="mat-h5 label">Description:</h5>
+          {{ movie?.description }}
+          <h5 class="mat-h5 label">Rating:</h5>
+          {{ movie?.rating }}
+          <a *ngIf="movie?.ratingUrl" [href]="movie?.ratingUrl" target="_blank">IMDb</a>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-button>Watch</button>
+        <button mat-button color="primary" (click)="watchTrailer(movie?.trailerUrl)">Trailer</button>
+        <button mat-button color="accent">Schedule</button>
       </mat-card-actions>
     </mat-card>
   </li>

@@ -8,7 +8,9 @@ export class Movie {
   duration: string;
   year: number;
   rating: string;
+  ratingUrl: string;
   avatarUrl: string;
   thumbnailUrl: string;
+  trailerUrl: string;
   category: Category;
 }

@@ -14,8 +14,9 @@
   max-height: 20rem;
   overflow: hidden;
 }
-/deep/ .mat-card-header-text {
+/deep/ .mat-card .mat-card-header-text {
   width: 100%;
+  margin: 0;
 }
 .mat-card-title, .mat-card-subtitle {
   display: flex;
@@ -23,5 +24,12 @@
   justify-content: space-between;
   > .year {
     color: rgba(0, 0, 0, 0.54);
+  }
+}
+.mat-card-content .label {
+  margin: 0;
+  font-weight: 500;
+  &:not(:first-child) {
+    margin-top: .5em;
   }
 }
