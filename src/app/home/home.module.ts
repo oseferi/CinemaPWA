@@ -4,7 +4,7 @@ import { HomeRoutingModule } from './home-routing.module';
 import { MatButtonModule, MatIconModule, MatGridListModule, MatCardModule, MatMenuModule, MatTableModule, MatPaginatorModule, MatSortModule, MatDividerModule } from '@angular/material';
 import { LayoutModule } from '@angular/cdk/layout';
 import { MoviesComponent } from './movies/movies.component';
-import { FavouritesComponent } from './favourites/favourites.component';
+import { SchedulesComponent } from './schedules/schedules.component';
 
 @NgModule({
   imports: [
@@ -23,7 +23,7 @@ import { FavouritesComponent } from './favourites/favourites.component';
   ],
   declarations: [
     MoviesComponent,
-    FavouritesComponent
+    SchedulesComponent
   ]
 })
 export class HomeModule { }

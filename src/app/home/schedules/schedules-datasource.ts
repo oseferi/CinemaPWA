@@ -2,47 +2,30 @@ import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator, MatSort } from '@angular/material';
 import { map } from 'rxjs/operators';
 import { Observable, of as observableOf, merge } from 'rxjs';
-
-// TODO: Replace this with your own data model type
-export interface FavouritesItem {
-  name: string;
-  id: number;
-}
-
-// TODO: replace this with real data from your application
-const EXAMPLE_DATA: FavouritesItem[] = [
-  {id: 1, name: 'Hydrogen'},
-  {id: 2, name: 'Helium'},
-  {id: 3, name: 'Lithium'},
-  {id: 4, name: 'Beryllium'},
-  {id: 5, name: 'Boron'},
-  {id: 6, name: 'Carbon'},
-  {id: 7, name: 'Nitrogen'},
-  {id: 8, name: 'Oxygen'},
-  {id: 9, name: 'Fluorine'},
-  {id: 10, name: 'Neon'},
-  {id: 11, name: 'Sodium'},
-  {id: 12, name: 'Magnesium'},
-  {id: 13, name: 'Aluminum'},
-  {id: 14, name: 'Silicon'},
-  {id: 15, name: 'Phosphorus'},
-  {id: 16, name: 'Sulfur'},
-  {id: 17, name: 'Chlorine'},
-  {id: 18, name: 'Argon'},
-  {id: 19, name: 'Potassium'},
-  {id: 20, name: 'Calcium'},
-];
+import { Schedule } from '../../core/models/schedule.model';
+import { ScheduleService } from '../../core/services/schedule.service';
 
 /**
  * Data source for the Favourites view. This class should
  * encapsulate all logic for fetching and manipulating the displayed data
  * (including sorting, pagination, and filtering).
  */
-export class FavouritesDataSource extends DataSource<FavouritesItem> {
-  data: FavouritesItem[] = EXAMPLE_DATA;
+export class SchedulesDataSource extends DataSource<Schedule> {
+  schedules: Schedule[] = [];
 
-  constructor(private paginator: MatPaginator, private sort: MatSort) {
+  constructor(private paginator: MatPaginator, private sort: MatSort, private scheduleService: ScheduleService) {
     super();
+    if (this.scheduleService) {
+      this.loadSchedules();
+    }
+  }
+
+  loadSchedules(): void {
+    this.scheduleService
+      .getSchedules()
+      .toPromise()
+      .then((response: Schedule[]) => this.schedules = response)
+      .catch(err => console.warn(err));
   }
 
   /**
@@ -50,20 +33,20 @@ export class FavouritesDataSource extends DataSource<FavouritesItem> {
    * the returned stream emits new items.
    * @returns A stream of the items to be rendered.
    */
-  connect(): Observable<FavouritesItem[]> {
+  connect(): Observable<Schedule[]> {
     // Combine everything that affects the rendered data into one update
     // stream for the data-table to consume.
     const dataMutations = [
-      observableOf(this.data),
+      observableOf(this.schedules),
       this.paginator.page,
       this.sort.sortChange
     ];
 
     // Set the paginator's length
-    this.paginator.length = this.data.length;
+    this.paginator.length = this.schedules.length;
 
     return merge(...dataMutations).pipe(map(() => {
-      return this.getPagedData(this.getSortedData([...this.data]));
+      return this.getPagedData(this.getSortedData([...this.schedules]));
     }));
   }
 
@@ -77,7 +60,7 @@ export class FavouritesDataSource extends DataSource<FavouritesItem> {
    * Paginate the data (client-side). If you're using server-side pagination,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  private getPagedData(data: FavouritesItem[]) {
+  private getPagedData(data: Schedule[]) {
     const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
     return data.splice(startIndex, this.paginator.pageSize);
   }
@@ -86,7 +69,7 @@ export class FavouritesDataSource extends DataSource<FavouritesItem> {
    * Sort the data (client-side). If you're using server-side sorting,
    * this would be replaced by requesting the appropriate data from the server.
    */
-  private getSortedData(data: FavouritesItem[]) {
+  private getSortedData(data: Schedule[]) {
     if (!this.sort.active || this.sort.direction === '') {
       return data;
     }
@@ -94,15 +77,17 @@ export class FavouritesDataSource extends DataSource<FavouritesItem> {
     return data.sort((a, b) => {
       const isAsc = this.sort.direction === 'asc';
       switch (this.sort.active) {
-        case 'name': return compare(a.name, b.name, isAsc);
-        case 'id': return compare(+a.id, +b.id, isAsc);
+        case 'theater': return this.compare(a.theater.number, b.theater.number, isAsc);
+        case 'movie': return this.compare(a.movie.name, b.movie.name, isAsc);
+        case 'date': return this.compareDate(a.date, b.date, isAsc);
+        case 'time': return this.compare(a.time, b.time, isAsc);
+        case 'price': return this.compare(a.price, b.price, isAsc);
         default: return 0;
       }
     });
   }
-}
 
-/** Simple sort comparator for example ID/Name columns (for client-side sorting). */
-function compare(a, b, isAsc) {
-  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+  private compare = (a, b, isAsc) => (a < b ? -1 : 1) * (isAsc ? 1 : -1);
+
+  private compareDate = (a, b, isAsc) => (new Date(a) < new Date(b) ? -1 : 1) * (isAsc ? 1 : -1);
 }

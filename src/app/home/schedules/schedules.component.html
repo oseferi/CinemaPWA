@@ -1,0 +1,39 @@
+<div class="mat-elevation-z8">
+  <table mat-table class="full-width-table" [dataSource]="dataSource" matSort aria-label="Elements">
+    <!-- Theater Column -->
+    <ng-container matColumnDef="theater">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Theater</th>
+      <td mat-cell *matCellDef="let row">{{ row?.theater?.number }}</td>
+    </ng-container>
+    <!-- Movie Column -->
+    <ng-container matColumnDef="movie">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Movie</th>
+      <td mat-cell *matCellDef="let row">{{ row?.movie?.name }}</td>
+    </ng-container>
+    <!-- Date Column -->
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+      <td mat-cell *matCellDef="let row">{{ row?.date }}</td>
+    </ng-container>
+    <!-- Time Column -->
+    <ng-container matColumnDef="time">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Time</th>
+      <td mat-cell *matCellDef="let row">{{ row?.time }}</td>
+    </ng-container>
+    <!-- Price Column -->
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
+      <td mat-cell *matCellDef="let row">{{ row?.price }}</td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator #paginator
+      [length]="dataSource?.schedules?.length"
+      [pageIndex]="0"
+      [pageSize]="15"
+      [pageSizeOptions]="[15, 30, 60, 90]">
+  </mat-paginator>
+</div>
+<button mat-fab><mat-icon>add</mat-icon></button>

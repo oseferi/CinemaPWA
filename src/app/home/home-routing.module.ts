@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { MoviesComponent } from './movies/movies.component';
-import { FavouritesComponent } from './favourites/favourites.component';
+import { SchedulesComponent } from './schedules/schedules.component';
 
 const routes: Routes = [
   {
@@ -18,9 +18,9 @@ const routes: Routes = [
         data: { icon: 'movie' }
       },
       {
-        path: 'favourites',
-        component: FavouritesComponent,
-        data: { icon: 'favorite_border' }
+        path: 'schedules',
+        component: SchedulesComponent,
+        data: { icon: 'schedule' }
       }
     ]
   }
