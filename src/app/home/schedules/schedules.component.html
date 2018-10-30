@@ -1,4 +1,7 @@
 <div class="mat-elevation-z8">
+  <mat-form-field>
+    <input matInput (keyup)="dataSource.filter = $event.target.value" placeholder="Filter">
+  </mat-form-field>
   <table mat-table class="full-width-table" [dataSource]="dataSource" matSort aria-label="Elements">
     <!-- Theater Column -->
     <ng-container matColumnDef="theater">
@@ -25,15 +28,15 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Price</th>
       <td mat-cell *matCellDef="let row">{{ row?.price }}</td>
     </ng-container>
-    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
   <mat-paginator #paginator
-      [length]="dataSource?.schedules?.length"
+      [length]="dataSource?.data?.length"
       [pageIndex]="0"
-      [pageSize]="15"
-      [pageSizeOptions]="[15, 30, 60, 90]">
+      [pageSize]="10"
+      [pageSizeOptions]="[10, 25, 50, 100]">
   </mat-paginator>
 </div>
 <button mat-fab><mat-icon>add</mat-icon></button>

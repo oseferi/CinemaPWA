@@ -1,7 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort } from '@angular/material';
-import { SchedulesDataSource } from './schedules-datasource';
+import { Component, ViewChild, OnInit } from '@angular/core';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { ScheduleService } from '../../core/services/schedule.service';
+import { Schedule } from '../../core/models/schedule.model';
 
 @Component({
   selector: 'app-schedules',
@@ -11,16 +11,36 @@ import { ScheduleService } from '../../core/services/schedule.service';
 export class SchedulesComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  dataSource: SchedulesDataSource;
+  dataSource: MatTableDataSource<Schedule>;
 
-  /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
   displayedColumns = ['theater', 'movie', 'date', 'time', 'price'];
 
   constructor(
     private scheduleService: ScheduleService
   ) {}
 
-  ngOnInit() {
-    this.dataSource = new SchedulesDataSource(this.paginator, this.sort, this.scheduleService);
+  ngOnInit(): void {
+    this.scheduleService
+      .getSchedules()
+      .toPromise()
+      .then((response: Schedule[]) => {
+        this.dataSource = new MatTableDataSource(response);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.dataSource.sortingDataAccessor = (item) => {
+          switch (this.dataSource.sort.active) {
+            case 'theater': return item.theater.number;
+            case 'movie': return item.movie.name;
+            case 'date': return item.date;
+            case 'time': return item.time;
+            case 'price': return item.price;
+            default: return 0;
+          }
+        };
+        this.dataSource.filterPredicate = (data, filter) => {
+          return (data.theater.number + data.movie.name + data.date + data.time + data.price).trim().toLowerCase().includes(filter.trim().toLowerCase());
+        };
+      })
+      .catch(err => console.warn(err));
   }
 }
