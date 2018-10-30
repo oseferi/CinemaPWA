@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { MoviesComponent } from './movies/movies.component';
 import { SchedulesComponent } from './schedules/schedules.component';
+import { TheatersComponent } from './theaters/theaters.component';
+import { CategoriesComponent } from './categories/categories.component';
 
 const routes: Routes = [
   {
@@ -21,6 +23,16 @@ const routes: Routes = [
         path: 'schedules',
         component: SchedulesComponent,
         data: { icon: 'schedule' }
+      },
+      {
+        path: 'theaters',
+        component: TheatersComponent,
+        data: { icon: 'meeting_room' }
+      },
+      {
+        path: 'categories',
+        component: CategoriesComponent,
+        data: { icon: 'category' }
       }
     ]
   }
