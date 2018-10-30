@@ -1,7 +1,7 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { Component, OnInit } from '@angular/core';
 import { ScheduleService } from '../../core/services/schedule.service';
 import { Schedule } from '../../core/models/schedule.model';
+import { PageEvent } from '@angular/material';
 
 @Component({
   selector: 'app-schedules',
@@ -9,11 +9,7 @@ import { Schedule } from '../../core/models/schedule.model';
   styleUrls: ['./schedules.component.scss'],
 })
 export class SchedulesComponent implements OnInit {
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
-  dataSource: MatTableDataSource<Schedule>;
-
-  displayedColumns = ['theater', 'movie', 'date', 'time', 'price'];
+  schedules: any[];
 
   constructor(
     private scheduleService: ScheduleService
@@ -24,23 +20,20 @@ export class SchedulesComponent implements OnInit {
       .getSchedules()
       .toPromise()
       .then((response: Schedule[]) => {
-        this.dataSource = new MatTableDataSource(response);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-        this.dataSource.sortingDataAccessor = (item) => {
-          switch (this.dataSource.sort.active) {
-            case 'theater': return item.theater.number;
-            case 'movie': return item.movie.name;
-            case 'date': return item.date;
-            case 'time': return item.time;
-            case 'price': return item.price;
-            default: return 0;
-          }
-        };
-        this.dataSource.filterPredicate = (data, filter) => {
-          return (data.theater.number + data.movie.name + data.date + data.time + data.price).trim().toLowerCase().includes(filter.trim().toLowerCase());
-        };
+        this.schedules = response.map((schedule: Schedule) => {
+          return {
+            theater: schedule.theater.number,
+            movie: schedule.movie.name,
+            date: schedule.date,
+            time: schedule.time,
+            price: schedule.price
+          };
+        });
       })
       .catch(err => console.warn(err));
+  }
+
+  public onPageChange(event: PageEvent) {
+    console.log(event);
   }
 }
