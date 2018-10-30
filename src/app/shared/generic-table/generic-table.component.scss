@@ -1,0 +1,23 @@
+table {
+  width: 100%;
+}
+.mat-header-cell, /deep/ .mat-sort-header-button {
+  text-transform: capitalize;
+}
+.mat-form-field {
+  width: 100%;
+  padding: .5rem 1.5rem;
+  background-color: white;
+  &.mat-focused {
+    .mat-icon {
+      color: #3F51B5;
+    }
+  }
+  .mat-icon {
+    color: #858585;
+    transition: .25s ease;
+  }
+  /deep/ .mat-form-field-underline {
+    background-color: rgba(0, 0, 0, .2);
+  }
+}

@@ -5,11 +5,13 @@ import { MatButtonModule, MatIconModule, MatGridListModule, MatCardModule, MatMe
 import { LayoutModule } from '@angular/cdk/layout';
 import { MoviesComponent } from './movies/movies.component';
 import { SchedulesComponent } from './schedules/schedules.component';
+import { SharedModule } from '../shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     HomeRoutingModule,
+    SharedModule,
     MatGridListModule,
     MatCardModule,
     MatMenuModule,
