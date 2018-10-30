@@ -22,6 +22,7 @@ export class SchedulesComponent implements OnInit {
       .then((response: Schedule[]) => {
         this.schedules = response.map((schedule: Schedule) => {
           return {
+            id: schedule.id,
             theater: schedule.theater.number,
             movie: schedule.movie.name,
             date: schedule.date,

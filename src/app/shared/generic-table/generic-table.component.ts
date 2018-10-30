@@ -24,6 +24,8 @@ export class GenericTableComponent implements OnChanges {
   pageSize = 10;
   @Input()
   pageSizeOptions = [10, 25, 50, 100];
+  @Input()
+  includeIdColumn = false;
   @Output()
   pageChange: EventEmitter<any> = new EventEmitter<any>();
 
@@ -32,6 +34,9 @@ export class GenericTableComponent implements OnChanges {
   ngOnChanges() {
     if (this.data && this.data.length && !this.displayedColumns) {
       this.displayedColumns = Object.keys(this.data[1]);
+    }
+    if (!this.includeIdColumn && this.displayedColumns && this.displayedColumns.includes('id')) {
+      this.displayedColumns.splice(this.displayedColumns.indexOf('id'), 1);
     }
     this.dataSource = new MatTableDataSource(this.data);
     this.dataSource.paginator = this.paginator;
