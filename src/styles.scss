@@ -8,9 +8,6 @@ html, body {
 * {
   box-sizing: border-box;
 }
-.mat-form-field .mat-form-field-wrapper {
-  padding-bottom: 0;
-  .mat-form-field-underline {
-    bottom: 0;
-  }
+.mat-form-field {
+  width: 100%;
 }

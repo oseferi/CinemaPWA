@@ -1,5 +1,5 @@
 import { Component, Input, ViewChild, OnChanges, Output, EventEmitter } from '@angular/core';
-import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
+import { MatSort, MatTableDataSource, MatPaginator, MatInput } from '@angular/material';
 
 @Component({
   selector: 'app-generic-table',
@@ -7,6 +7,7 @@ import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
   styleUrls: ['./generic-table.component.scss']
 })
 export class GenericTableComponent implements OnChanges {
+  @ViewChild(MatInput) filterInput: MatInput;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
   dataSource: MatTableDataSource<any>;
@@ -26,8 +27,12 @@ export class GenericTableComponent implements OnChanges {
   pageSizeOptions = [10, 25, 50, 100];
   @Input()
   includeIdColumn = false;
+  @Input()
+  clickableRows = false;
   @Output()
   pageChange: EventEmitter<any> = new EventEmitter<any>();
+  @Output()
+  rowClick: EventEmitter<any> = new EventEmitter<any>();
 
   constructor() {}
 
@@ -41,6 +46,15 @@ export class GenericTableComponent implements OnChanges {
     this.dataSource = new MatTableDataSource(this.data);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    this.dataSource.sortingDataAccessor = (data: any, sortHeaderId: string): string => { // Ignoring cases for string sort.
+      if (typeof data[sortHeaderId] === 'string') {
+        return data[sortHeaderId].toLowerCase();
+      }
+      return data[sortHeaderId];
+    };
     this.dataSource.filterPredicate = (data, filter) => Object.values(data).join(' ').toLowerCase().includes(filter.toLowerCase());
+    this.applyFilter();
   }
+
+  public applyFilter = () => this.dataSource.filter = this.filterInput && this.filterInput.value;
 }

@@ -1,6 +1,6 @@
 <!-- WITH FILTER -->
 <mat-form-field *ngIf="filtering">
-  <input matInput (keyup)="dataSource.filter = $event.target.value" placeholder="Search">
+  <input matInput (keyup)="applyFilter()" placeholder="Search">
   <mat-icon matSuffix>search</mat-icon>
 </mat-form-field>
 <!-- WITH SORT -->
@@ -10,7 +10,12 @@
     <mat-cell *matCellDef="let row">{{ row[col] }}</mat-cell>
   </ng-container>
   <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  <div *ngIf="clickableRows">
+    <mat-row class="clickable" *matRowDef="let row; columns: displayedColumns;" matRipple (click)="rowClick.emit(row)"></mat-row>
+  </div>
+  <div *ngIf="!clickableRows">
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </div>
 </mat-table>
 <!-- WITHOUT SORT -->
 <mat-table *ngIf="!sorting" [dataSource]="dataSource">
@@ -19,7 +24,12 @@
     <mat-cell *matCellDef="let row">{{ row[col] }}</mat-cell>
   </ng-container>
   <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
-  <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  <div *ngIf="clickableRows">
+    <mat-row class="clickable" *matRowDef="let row; columns: displayedColumns;" matRipple (click)="rowClick.emit(row)"></mat-row>
+  </div>
+  <div *ngIf="!clickableRows">
+    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+  </div>
 </mat-table>
 <!-- WITH PAGINATION -->
 <mat-paginator
