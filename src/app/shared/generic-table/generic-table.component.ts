@@ -38,7 +38,7 @@ export class GenericTableComponent implements OnChanges {
 
   ngOnChanges() {
     if (this.data && this.data.length && !this.displayedColumns) {
-      this.displayedColumns = Object.keys(this.data[1]);
+      this.displayedColumns = Object.keys(this.data[0]);
     }
     if (!this.includeIdColumn && this.displayedColumns && this.displayedColumns.includes('id')) {
       this.displayedColumns.splice(this.displayedColumns.indexOf('id'), 1);
