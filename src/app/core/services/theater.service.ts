@@ -10,5 +10,5 @@ import { Theater } from '../models/theater.model';
 export class TheaterService {
   constructor(private http: HttpClient) {}
 
-  public getTheaters = (): Observable<Theater[]> => this.http.get<Theater[]>(`${environment.apiUrl}/theaters`);
+  public getTheaters = (): Observable<Theater[]> => this.http.get<Theater[]>(`${environment.apiUrl}/theaters?validity=true`);
 }

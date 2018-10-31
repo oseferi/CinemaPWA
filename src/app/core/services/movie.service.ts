@@ -10,5 +10,5 @@ import { Movie } from '../models/movie.model';
 export class MovieService {
   constructor(private http: HttpClient) {}
 
-  public getMovies = (): Observable<Movie[]> => this.http.get<Movie[]>(`${environment.apiUrl}/movies`);
+  public getMovies = (): Observable<Movie[]> => this.http.get<Movie[]>(`${environment.apiUrl}/movies?validity=true`);
 }

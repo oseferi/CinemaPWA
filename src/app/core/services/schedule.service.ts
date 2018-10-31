@@ -10,5 +10,5 @@ import { Schedule } from '../models/schedule.model';
 export class ScheduleService {
   constructor(private http: HttpClient) {}
 
-  public getSchedules = (): Observable<Schedule[]> => this.http.get<Schedule[]>(`${environment.apiUrl}/schedules`);
+  public getSchedules = (): Observable<Schedule[]> => this.http.get<Schedule[]>(`${environment.apiUrl}/schedules?validity=true`);
 }
