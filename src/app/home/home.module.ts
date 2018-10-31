@@ -10,6 +10,7 @@ import { TheatersComponent } from './theaters/theaters.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { CategoryComponent } from './categories/category/category.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { TheaterComponent } from './theaters/theater/theater.component';
 
 @NgModule({
   imports: [
@@ -36,11 +37,13 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
     MoviesComponent,
     SchedulesComponent,
     TheatersComponent,
+    TheaterComponent,
     CategoriesComponent,
     CategoryComponent
   ],
   entryComponents: [
-    CategoryComponent
+    CategoryComponent,
+    TheaterComponent
   ]
 })
 export class HomeModule { }

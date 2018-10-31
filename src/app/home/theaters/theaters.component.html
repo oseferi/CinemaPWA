@@ -1,2 +1,2 @@
-<app-generic-table [data]="theaters" (pageChange)="onPageChange($event)" [includeIdColumn]="true"></app-generic-table>
-<button mat-fab><mat-icon>add</mat-icon></button>
+<app-generic-table [data]="theaters" (pageChange)="onPageChange($event)" [includeIdColumn]="true" [clickableRows]="true" (rowClick)="onRowClick($event)"></app-generic-table>
+<button mat-fab (click)="add()"><mat-icon>add</mat-icon></button>

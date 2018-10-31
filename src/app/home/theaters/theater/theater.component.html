@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>{{ editMode ? 'Edit Theater' : 'New Theater' }}</h1>
+<form mat-dialog-content [formGroup]="request?.formGroup">
+  <mat-form-field>
+    <input matInput type="number" formControlName="number" placeholder="Number">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="number" formControlName="floor" placeholder="Floor">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput type="number" formControlName="capacity" placeholder="Capacity">
+  </mat-form-field>
+</form>
+<div mat-dialog-actions>
+  <button [disabled]="request?.formGroup?.invalid" mat-button (click)="save()" color="primary">Save</button>
+  <button mat-button [mat-dialog-close] color="accent">Cancel</button>
+  <button *ngIf="editMode" mat-button [mat-dialog-close] (click)="delete()" color="warn">Delete</button>
+</div>
