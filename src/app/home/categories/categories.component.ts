@@ -3,10 +3,10 @@ import { PageEvent, MatDialog, MatDialogRef, MatSnackBar } from '@angular/materi
 import { CategoryComponent } from './category/category.component';
 import { Category, CategoryRequest } from './models/category.model';
 import { Observable, Subscription } from 'rxjs';
-import { Store, ActionsSubject } from '@ngrx/store';
-import { CategoryState } from './reducers/category.reducer';
+import { Store, ActionsSubject, select } from '@ngrx/store';
 import * as fromCategory from './reducers/category.reducer';
 import { LoadCategories, DeleteCategory, AddCategory, UpdateCategory, CategoryActions, CategoryActionTypes, RestoreCategory } from './actions/category.actions';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-categories',
@@ -20,15 +20,22 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   dialogRef: MatDialogRef<CategoryComponent>;
 
   constructor(
-    private store: Store<CategoryState>,
+    private store: Store<fromCategory.CategoryState>,
     private actionsSubject: ActionsSubject,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
-    this.categories$ = this.store.select(fromCategory.selectAll);
-    this.store.dispatch(new LoadCategories());
+    this.categories$ = this.store.pipe(
+      select(fromCategory.selectAll),
+      map((categories: Category[]) => {
+        if (!categories.length) {
+          this.store.dispatch(new LoadCategories());
+        }
+        return categories;
+      })
+    );
     this.actionsSubjectSubscription = this.actionsSubject.subscribe((action: CategoryActions) => {
       switch (action.type) {
         case CategoryActionTypes.AddCategorySuccess:
