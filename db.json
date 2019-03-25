@@ -127,7 +127,32 @@
     {
       "id": 5,
       "name": "Comedy",
-      "validity": true
+      "validity": false
+    },
+    {
+      "name": "asdasda",
+      "validity": false,
+      "id": 6
+    },
+    {
+      "name": "Comedy",
+      "validity": false,
+      "id": 7
+    },
+    {
+      "name": "Comedy",
+      "validity": true,
+      "id": 8
+    },
+    {
+      "name": "test",
+      "validity": false,
+      "id": 9
+    },
+    {
+      "name": "asd",
+      "validity": false,
+      "id": 10
     }
   ],
   "theaters": [

@@ -1,6 +1,6 @@
 import { Component, Output, EventEmitter, OnInit, Inject } from '@angular/core';
-import { CategoryRequest, Category } from '../../../core/models/category.model';
 import { MAT_DIALOG_DATA } from '@angular/material';
+import { Category, CategoryRequest } from '../models/category.model';
 
 @Component({
   selector: 'app-category',
@@ -13,9 +13,9 @@ export class CategoryComponent implements OnInit {
   @Output()
   addedCategory: EventEmitter<CategoryRequest> = new EventEmitter<CategoryRequest>();
   @Output()
-  updatedCategory: EventEmitter<{ id: number, category: CategoryRequest }> = new EventEmitter<{ id: number, category: CategoryRequest }>();
+  updatedCategory: EventEmitter<{ id: string, category: CategoryRequest }> = new EventEmitter<{ id: string, category: CategoryRequest }>();
   @Output()
-  deletedCategory: EventEmitter<number> = new EventEmitter<number>();
+  deletedCategory: EventEmitter<Category> = new EventEmitter<Category>();
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: Category
@@ -37,6 +37,6 @@ export class CategoryComponent implements OnInit {
   }
 
   public delete(): void {
-    this.deletedCategory.emit(this.data.id);
+    this.deletedCategory.emit(this.data);
   }
 }

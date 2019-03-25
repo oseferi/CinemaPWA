@@ -7,10 +7,16 @@ import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatProgressSpinnerModule, MatSpinner } from '@angular/material';
+import { MatProgressSpinnerModule, MatSpinner, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material';
 import { CoreModule } from './core/core.module';
 import { CommonModule } from '@angular/common';
 import { AppLayoutModule } from './layout/layout.module';
+import { StoreModule } from '@ngrx/store';
+import { reducers, metaReducers } from './reducers';
+import { EffectsModule } from '@ngrx/effects';
+import { AppEffects } from './app.effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { StoreRouterConnectingModule } from '@ngrx/router-store';
 
 @NgModule({
   declarations: [
@@ -27,9 +33,18 @@ import { AppLayoutModule } from './layout/layout.module';
     BrowserAnimationsModule,
     MatProgressSpinnerModule,
     CoreModule,
-    AppLayoutModule
+    AppLayoutModule,
+    StoreModule.forRoot(reducers, { metaReducers }),
+    EffectsModule.forRoot([AppEffects]),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
+    StoreRouterConnectingModule.forRoot()
   ],
-  providers: [],
+  providers: [
+    {
+      provide: MAT_DIALOG_DEFAULT_OPTIONS,
+      useValue: { disableClose: true, hasBackdrop: true }
+    }
+  ],
   bootstrap: [AppComponent],
   entryComponents: [
     MatSpinner

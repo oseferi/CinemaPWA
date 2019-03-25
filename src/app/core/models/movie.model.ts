@@ -1,4 +1,4 @@
-import { Category } from './category.model';
+import { Category } from '../../home/categories/models/category.model';
 
 export class Movie {
   id: number;

@@ -12,6 +12,10 @@ import { CategoryComponent } from './categories/category/category.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { TheaterComponent } from './theaters/theater/theater.component';
 import { ScheduleComponent } from './schedules/schedule/schedule.component';
+import { StoreModule } from '@ngrx/store';
+import * as fromCategory from './categories/reducers/category.reducer';
+import { EffectsModule } from '@ngrx/effects';
+import { CategoryEffects } from './categories/effects/category.effects';
 
 @NgModule({
   imports: [
@@ -36,7 +40,9 @@ import { ScheduleComponent } from './schedules/schedule/schedule.component';
     MatSelectModule,
     MatOptionModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    StoreModule.forFeature('category', fromCategory.categoryReducer),
+    EffectsModule.forFeature([CategoryEffects])
   ],
   declarations: [
     MoviesComponent,

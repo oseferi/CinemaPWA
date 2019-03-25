@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Category, CategoryRequest } from '../models/category.model';
+import { Category, CategoryRequest } from '../../home/categories/models/category.model';
+import { Update } from '@ngrx/entity';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class CategoryService {
 
   public getCategories = (): Observable<Category[]> => this.http.get<Category[]>(`${environment.apiUrl}/categories?validity=true`);
   public createCategory = (request: CategoryRequest): Observable<Category> => this.http.post<Category>(`${environment.apiUrl}/categories`, { ...request.formGroup.value, validity: true });
-  public updateCategory = (id: number, request: CategoryRequest): Observable<Category> => this.http.patch<Category>(`${environment.apiUrl}/categories/${id}`, request.formGroup.value);
-  public deleteCategory = (id: number): Observable<void> => this.http.patch<void>(`${environment.apiUrl}/categories/${id}`, { validity: false });
-  public restoreCategory = (id: number): Observable<void> => this.http.patch<void>(`${environment.apiUrl}/categories/${id}`, { validity: true });
+  public updateCategory = (request: Update<Category>): Observable<Category> => this.http.patch<Category>(`${environment.apiUrl}/categories/${request.id}`, request.changes);
+  public deleteCategory = (id: string | number): Observable<void> => this.http.patch<void>(`${environment.apiUrl}/categories/${id}`, { validity: false });
+  public restoreCategory = (id: string | number): Observable<void> => this.http.patch<void>(`${environment.apiUrl}/categories/${id}`, { validity: true });
 }
