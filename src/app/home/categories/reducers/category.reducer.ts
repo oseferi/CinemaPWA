@@ -7,7 +7,7 @@ export interface CategoryState extends EntityState<Category> {
   // additional entities state properties
 }
 
-export const adapter: EntityAdapter<Category> = createEntityAdapter<Category>();
+export const adapter: EntityAdapter<Category> = createEntityAdapter<Category>({ sortComparer: (a: Category, b: Category) => a.id < b.id ? -1 : 1 });
 
 export const initialState: CategoryState = adapter.getInitialState({
   // additional entity state properties
