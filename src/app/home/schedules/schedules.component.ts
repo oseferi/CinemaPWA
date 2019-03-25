@@ -11,6 +11,7 @@ import { ScheduleRequest, Schedule } from '../../core/models/schedule.model';
 })
 export class SchedulesComponent implements OnInit {
   schedules: any[];
+  displayedColumns: string[] = ['movie.name', 'theater.number', 'date', 'time', 'price'];
   dialogRef: MatDialogRef<ScheduleComponent>;
 
   constructor(
@@ -23,18 +24,7 @@ export class SchedulesComponent implements OnInit {
     this.scheduleService
       .getSchedules()
       .toPromise()
-      .then((response: Schedule[]) => {
-        this.schedules = response.map((schedule: Schedule) => {
-          return {
-            id: schedule.id,
-            theater: schedule.theater.number,
-            movie: schedule.movie.name,
-            date: schedule.date,
-            time: schedule.time,
-            price: schedule.price
-          };
-        });
-      })
+      .then((response: Schedule[]) => this.schedules = response)
       .catch(err => console.warn(err));
   }
 

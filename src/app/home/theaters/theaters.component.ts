@@ -11,6 +11,7 @@ import { TheaterComponent } from './theater/theater.component';
 })
 export class TheatersComponent implements OnInit {
   theaters: any[];
+  displayedColumns: string[] = ['number', 'floor', 'capacity'];
   dialogRef: MatDialogRef<TheaterComponent>;
 
   constructor(
@@ -23,16 +24,7 @@ export class TheatersComponent implements OnInit {
     this.theaterService
       .getTheaters()
       .toPromise()
-      .then((response: Theater[]) => {
-        this.theaters = response.map((theater: Theater) => {
-          return {
-            id: theater.id,
-            number: theater.number,
-            floor: theater.floor,
-            capacity: theater.capacity
-          };
-        });
-      })
+      .then((response: Theater[]) => this.theaters = response)
       .catch(err => console.warn(err));
   }
 
