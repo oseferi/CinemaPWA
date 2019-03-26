@@ -1,9 +1,9 @@
-import { Theater } from './theater.model';
-import { Movie } from './movie.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Theater } from '../../theaters/models/theater.model';
+import { Movie } from '../../movies/models/movie.model';
 
 export class Schedule {
-  id: number;
+  id: string;
   theater: Theater;
   movie: Movie;
   date: string;

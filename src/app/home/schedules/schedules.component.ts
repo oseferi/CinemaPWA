@@ -1,41 +1,53 @@
-import { Component, OnInit } from '@angular/core';
-import { ScheduleService } from '../../core/services/schedule.service';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { PageEvent, MatDialogRef, MatDialog, MatSnackBar } from '@angular/material';
 import { ScheduleComponent } from './schedule/schedule.component';
-import { ScheduleRequest, Schedule } from '../../core/models/schedule.model';
+import { ScheduleRequest, Schedule } from './models/schedule.model';
+import { AddSchedule, UpdateSchedule, DeleteSchedule, LoadSchedules, ScheduleActions, ScheduleActionTypes, RestoreSchedule } from './actions/schedule.actions';
+import { Store, ActionsSubject, select } from '@ngrx/store';
+import * as fromSchedule from './reducers/schedule.reducer';
+import { Subscription, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Update } from '@ngrx/entity';
 
 @Component({
   selector: 'app-schedules',
   templateUrl: './schedules.component.html',
   styleUrls: ['./schedules.component.scss'],
 })
-export class SchedulesComponent implements OnInit {
-  schedules: any[];
-  dialogRef: MatDialogRef<ScheduleComponent>;
+export class SchedulesComponent implements OnInit, OnDestroy {
+  private actionsSubjectSubscription: Subscription;
+  private dialogRef: MatDialogRef<ScheduleComponent>;
+  schedules$: Observable<Schedule[]>;
+  displayedColumns: string[] = ['movie.name', 'theater.number', 'date', 'time', 'price'];
 
   constructor(
-    private scheduleService: ScheduleService,
+    private store: Store<fromSchedule.ScheduleState>,
+    private actionsSubject: ActionsSubject,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
-    this.scheduleService
-      .getSchedules()
-      .toPromise()
-      .then((response: Schedule[]) => {
-        this.schedules = response.map((schedule: Schedule) => {
-          return {
-            id: schedule.id,
-            theater: schedule.theater.number,
-            movie: schedule.movie.name,
-            date: schedule.date,
-            time: schedule.time,
-            price: schedule.price
-          };
-        });
+    this.schedules$ = this.store.pipe(
+      select(fromSchedule.selectAll),
+      map((schedules: Schedule[]) => {
+        if (!schedules.length) {
+          this.store.dispatch(new LoadSchedules());
+        }
+        return schedules;
       })
-      .catch(err => console.warn(err));
+    );
+    this.actionsSubjectSubscription = this.actionsSubject.subscribe((action: ScheduleActions) => {
+      switch (action.type) {
+        case ScheduleActionTypes.AddScheduleSuccess:
+        case ScheduleActionTypes.UpdateScheduleSuccess: this.dialogRef.close(); return;
+        case ScheduleActionTypes.DeleteScheduleSuccess: this.dialogRef.close(); this.showUndoSnackbar(action.payload.schedule); return;
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.actionsSubjectSubscription.unsubscribe();
   }
 
   public onPageChange(event: PageEvent) {
@@ -44,59 +56,31 @@ export class SchedulesComponent implements OnInit {
 
   public add(): void {
     this.dialogRef = this.dialog.open(ScheduleComponent);
-    const subscription = this.dialogRef.componentInstance.addedSchedule.subscribe((request: ScheduleRequest) => this.onAddedSchedule(request));
+    const subscription = this.dialogRef.componentInstance.addedSchedule.subscribe((schedule: ScheduleRequest) => this.onAddedSchedule(schedule));
     this.dialogRef.afterClosed().subscribe(() => subscription.unsubscribe());
   }
 
   private onAddedSchedule(schedule: ScheduleRequest): void {
-    this.scheduleService
-      .createSchedule(schedule)
-      .toPromise()
-      .then((response: Schedule) => {
-        this.schedules = [...this.schedules, { ...response, theater: response.theater.number, movie: response.movie.name }];
-        this.dialogRef.close();
-      })
-      .catch(err => console.warn(err));
+    this.store.dispatch(new AddSchedule({ schedule }));
   }
 
-  private onUpdatedSchedule(request: { id: number, schedule: ScheduleRequest }): void {
-    this.scheduleService
-      .updateSchedule(request.id, request.schedule)
-      .toPromise()
-      .then((response: Schedule) => {
-        this.schedules = this.schedules.map((schedule: Schedule) => schedule.id === request.id ? { ...schedule, ...response, theater: response.theater.number, movie: response.movie.name } : schedule );
-        this.dialogRef.close();
-      })
-      .catch(err => console.warn(err));
+  private onUpdatedSchedule(schedule: Update<Schedule>): void {
+    this.store.dispatch(new UpdateSchedule({ schedule }));
   }
 
-  private onDeletedSchedule(id: number): void {
-    const targetSchedule: Schedule = this.schedules.find((schedule: Schedule) => schedule.id === id);
-    const targetScheduleIndex = this.schedules.indexOf(targetSchedule);
-    this.scheduleService
-      .deleteSchedule(id)
-      .toPromise()
-      .then(() => {
-        this.dialogRef.close();
-        const snackBarRef = this.snackBar.open(`Schedule for movie: "${targetSchedule.movie}" deleted successfully!`, 'Undo', {
-          duration: 4000
-        });
-        snackBarRef.onAction().subscribe(() => {
-          this.scheduleService
-            .restoreSchedule(id)
-            .toPromise()
-            .then(() => this.schedules = [...this.schedules.slice(0, targetScheduleIndex), targetSchedule, ...this.schedules.slice(targetScheduleIndex)]) // Adds to original position.
-            .catch(err => console.warn(err));
-        });
-        this.schedules = this.schedules.filter((schedule: Schedule) => schedule !== targetSchedule);
-      })
-        .catch(err => console.warn(err));
+  private onDeletedSchedule(schedule: Schedule): void {
+    this.store.dispatch(new DeleteSchedule({ schedule }));
   }
 
-  public onRowClick(schedule: Schedule): void {
-    this.dialogRef = this.dialog.open(ScheduleComponent, { data: schedule });
-    const updateSubscription = this.dialogRef.componentInstance.updatedSchedule.subscribe((request: { id: number, schedule: ScheduleRequest }) => this.onUpdatedSchedule(request));
-    const deleteSubscription = this.dialogRef.componentInstance.deletedSchedule.subscribe((id: number) => this.onDeletedSchedule(id));
+  private showUndoSnackbar(schedule: Schedule): void {
+    const snackBarRef = this.snackBar.open(`Schedule for movie "${schedule.movie.name}" deleted successfully!`, 'Undo', { duration: 4000 });
+    snackBarRef.onAction().subscribe(() => this.store.dispatch(new RestoreSchedule({ schedule })));
+  }
+
+  public onRowClick(selectedSchedule: Schedule): void {
+    this.dialogRef = this.dialog.open(ScheduleComponent, { data: selectedSchedule });
+    const updateSubscription = this.dialogRef.componentInstance.updatedSchedule.subscribe((schedule: Update<Schedule>) => this.onUpdatedSchedule(schedule));
+    const deleteSubscription = this.dialogRef.componentInstance.deletedSchedule.subscribe((schedule: Schedule) => this.onDeletedSchedule(schedule));
     this.dialogRef.afterClosed().subscribe(() => {
       updateSubscription.unsubscribe();
       deleteSubscription.unsubscribe();

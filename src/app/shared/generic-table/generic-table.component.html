@@ -6,8 +6,8 @@
 <!-- WITH SORT -->
 <mat-table *ngIf="sorting" matSort [dataSource]="dataSource">
   <ng-container *ngFor="let col of displayedColumns" [matColumnDef]="col">
-    <mat-header-cell mat-sort-header *matHeaderCellDef>{{ col }}</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{ row[col] }}</mat-cell>
+    <mat-header-cell mat-sort-header *matHeaderCellDef>{{ getColumnName(col) | titlecase }}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{ getObjectValue(row, col) }}</mat-cell>
   </ng-container>
   <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
   <div *ngIf="clickableRows">
@@ -20,8 +20,8 @@
 <!-- WITHOUT SORT -->
 <mat-table *ngIf="!sorting" [dataSource]="dataSource">
   <ng-container *ngFor="let col of displayedColumns" [matColumnDef]="col">
-    <mat-header-cell *matHeaderCellDef>{{ col }}</mat-header-cell>
-    <mat-cell *matCellDef="let row">{{ row[col] }}</mat-cell>
+    <mat-header-cell *matHeaderCellDef>{{ getColumnName(col) | titlecase }}</mat-header-cell>
+    <mat-cell *matCellDef="let row">{{ getObjectValue(row, col) }}</mat-cell>
   </ng-container>
   <mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></mat-header-row>
   <div *ngIf="clickableRows">

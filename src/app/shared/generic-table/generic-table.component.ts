@@ -1,18 +1,20 @@
 import { Component, Input, ViewChild, OnChanges, Output, EventEmitter } from '@angular/core';
 import { MatSort, MatTableDataSource, MatPaginator, MatInput } from '@angular/material';
+import { pluck } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-generic-table',
   templateUrl: './generic-table.component.html',
   styleUrls: ['./generic-table.component.scss']
 })
-export class GenericTableComponent implements OnChanges {
+export class GenericTableComponent<T> implements OnChanges {
   @ViewChild(MatInput) filterInput: MatInput;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  dataSource: MatTableDataSource<any>;
+  dataSource: MatTableDataSource<T>;
   @Input()
-  data: any[];
+  data: T[];
   @Input()
   displayedColumns: string[];
   @Input()
@@ -26,35 +28,31 @@ export class GenericTableComponent implements OnChanges {
   @Input()
   pageSizeOptions = [10, 25, 50, 100];
   @Input()
-  includeIdColumn = false;
-  @Input()
   clickableRows = false;
   @Output()
   pageChange: EventEmitter<any> = new EventEmitter<any>();
   @Output()
-  rowClick: EventEmitter<any> = new EventEmitter<any>();
+  rowClick: EventEmitter<T> = new EventEmitter<T>();
 
   constructor() {}
 
   ngOnChanges() {
-    if (this.data && this.data.length && !this.displayedColumns) {
-      this.displayedColumns = Object.keys(this.data[0]);
-    }
-    if (!this.includeIdColumn && this.displayedColumns && this.displayedColumns.includes('id')) {
-      this.displayedColumns.splice(this.displayedColumns.indexOf('id'), 1);
-    }
     this.dataSource = new MatTableDataSource(this.data);
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
     this.dataSource.sortingDataAccessor = (data: any, sortHeaderId: string): string => { // Ignoring cases for string sort.
-      if (typeof data[sortHeaderId] === 'string') {
-        return data[sortHeaderId].toLowerCase();
+      if (typeof this.getObjectValue(data, sortHeaderId) === 'string') {
+        return this.getObjectValue(data, sortHeaderId).toLowerCase();
       }
-      return data[sortHeaderId];
+      return this.getObjectValue(data, sortHeaderId);
     };
     this.dataSource.filterPredicate = (data, filter) => Object.values(data).join(' ').toLowerCase().includes(filter.toLowerCase());
     this.applyFilter();
   }
 
   public applyFilter = () => this.dataSource.filter = this.filterInput && this.filterInput.value;
+
+  public getColumnName = (key: string): any => key.split('.').length ? key.split('.')[0] : key;
+
+  public getObjectValue = (object: T, key: string): any => key.split('.').length ? key.split('.').reduce((prev: string, curr: string) => prev && prev[curr] || null, object) : object[key];
 }

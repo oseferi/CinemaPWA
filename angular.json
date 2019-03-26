@@ -9,26 +9,26 @@
       "projectType": "application",
       "prefix": "app",
       "schematics": {
-        "@schematics/angular:component": {
+        "@ngrx/schematics:component": {
           "styleext": "scss",
           "spec": false
         },
-        "@schematics/angular:class": {
+        "@ngrx/schematics:class": {
           "spec": false
         },
-        "@schematics/angular:directive": {
+        "@ngrx/schematics:directive": {
           "spec": false
         },
-        "@schematics/angular:guard": {
+        "@ngrx/schematics:guard": {
           "spec": false
         },
-        "@schematics/angular:module": {
+        "@ngrx/schematics:module": {
           "spec": false
         },
-        "@schematics/angular:pipe": {
+        "@ngrx/schematics:pipe": {
           "spec": false
         },
-        "@schematics/angular:service": {
+        "@ngrx/schematics:service": {
           "spec": false
         }
       },
@@ -154,5 +154,8 @@
       }
     }
   },
-  "defaultProject": "CinemaPWA"
+  "defaultProject": "CinemaPWA",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  }
 }
