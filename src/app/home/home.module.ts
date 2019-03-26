@@ -18,6 +18,10 @@ import { EffectsModule } from '@ngrx/effects';
 import { CategoryEffects } from './categories/effects/category.effects';
 import * as fromTheater from './theaters/reducers/theater.reducer';
 import { TheaterEffects } from './theaters/effects/theater.effects';
+import * as fromSchedule from './schedules/reducers/schedule.reducer';
+import * as fromMovie from './movies/reducers/movie.reducer';
+import { ScheduleEffects } from './schedules/effects/schedule.effects';
+import { MovieEffects } from './movies/effects/movie.effects';
 
 @NgModule({
   imports: [
@@ -46,9 +50,13 @@ import { TheaterEffects } from './theaters/effects/theater.effects';
     StoreModule.forFeature('category', fromCategory.categoryReducer),
     EffectsModule.forFeature([
       CategoryEffects,
-      TheaterEffects
+      TheaterEffects,
+      ScheduleEffects,
+      MovieEffects
     ]),
-    StoreModule.forFeature('theater', fromTheater.theaterReducer)
+    StoreModule.forFeature('theater', fromTheater.theaterReducer),
+    StoreModule.forFeature('schedule', fromSchedule.scheduleReducer),
+    StoreModule.forFeature('movie', fromMovie.movieReducer)
   ],
   declarations: [
     MoviesComponent,

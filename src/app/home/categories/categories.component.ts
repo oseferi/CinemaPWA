@@ -7,6 +7,7 @@ import { Store, ActionsSubject, select } from '@ngrx/store';
 import * as fromCategory from './reducers/category.reducer';
 import { LoadCategories, DeleteCategory, AddCategory, UpdateCategory, CategoryActions, CategoryActionTypes, RestoreCategory } from './actions/category.actions';
 import { map } from 'rxjs/operators';
+import { Update } from '@ngrx/entity';
 
 @Component({
   selector: 'app-categories',
@@ -55,7 +56,7 @@ export class CategoriesComponent implements OnInit, OnDestroy {
 
   public add(): void {
     this.dialogRef = this.dialog.open(CategoryComponent);
-    const subscription = this.dialogRef.componentInstance.addedCategory.subscribe((request: CategoryRequest) => this.onAddedCategory(request));
+    const subscription = this.dialogRef.componentInstance.addedCategory.subscribe((category: CategoryRequest) => this.onAddedCategory(category));
     this.dialogRef.afterClosed().subscribe(() => subscription.unsubscribe());
   }
 
@@ -63,8 +64,8 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     this.store.dispatch(new AddCategory({ category }));
   }
 
-  private onUpdatedCategory(request: { id: string, category: CategoryRequest }): void {
-    this.store.dispatch(new UpdateCategory({ category: { id: request.id, changes: request.category.formGroup.value } }));
+  private onUpdatedCategory(category: Update<Category>): void {
+    this.store.dispatch(new UpdateCategory({ category }));
   }
 
   private onDeletedCategory(category: Category): void {
@@ -76,10 +77,10 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     snackBarRef.onAction().subscribe(() => this.store.dispatch(new RestoreCategory({ category })));
   }
 
-  public onRowClick(category: Category): void {
-    this.dialogRef = this.dialog.open(CategoryComponent, { data: category });
-    const updateSubscription = this.dialogRef.componentInstance.updatedCategory.subscribe((request: { id: string, category: CategoryRequest }) => this.onUpdatedCategory(request));
-    const deleteSubscription = this.dialogRef.componentInstance.deletedCategory.subscribe((categoryToDelete: Category) => this.onDeletedCategory(categoryToDelete));
+  public onRowClick(selectedCategory: Category): void {
+    this.dialogRef = this.dialog.open(CategoryComponent, { data: selectedCategory });
+    const updateSubscription = this.dialogRef.componentInstance.updatedCategory.subscribe((category: Update<Category>) => this.onUpdatedCategory(category));
+    const deleteSubscription = this.dialogRef.componentInstance.deletedCategory.subscribe((category: Category) => this.onDeletedCategory(category));
     this.dialogRef.afterClosed().subscribe(() => {
       updateSubscription.unsubscribe();
       deleteSubscription.unsubscribe();

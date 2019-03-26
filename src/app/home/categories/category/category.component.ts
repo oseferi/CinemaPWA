@@ -1,6 +1,7 @@
 import { Component, Output, EventEmitter, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { Category, CategoryRequest } from '../models/category.model';
+import { Update } from '@ngrx/entity';
 
 @Component({
   selector: 'app-category',
@@ -13,7 +14,7 @@ export class CategoryComponent implements OnInit {
   @Output()
   addedCategory: EventEmitter<CategoryRequest> = new EventEmitter<CategoryRequest>();
   @Output()
-  updatedCategory: EventEmitter<{ id: string, category: CategoryRequest }> = new EventEmitter<{ id: string, category: CategoryRequest }>();
+  updatedCategory: EventEmitter<Update<Category>> = new EventEmitter<Update<Category>>();
   @Output()
   deletedCategory: EventEmitter<Category> = new EventEmitter<Category>();
 
@@ -30,7 +31,7 @@ export class CategoryComponent implements OnInit {
 
   public save(): void {
     if (this.editMode) {
-      this.updatedCategory.emit({ id: this.data.id, category: this.request });
+      this.updatedCategory.emit({ id: this.data.id, changes: this.request.formGroup.value });
     } else {
       this.addedCategory.emit(this.request);
     }

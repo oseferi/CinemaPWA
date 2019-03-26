@@ -14,6 +14,6 @@ export class CategoryService {
   public getCategories = (): Observable<Category[]> => this.http.get<Category[]>(`${environment.apiUrl}/categories?validity=true`);
   public createCategory = (request: CategoryRequest): Observable<Category> => this.http.post<Category>(`${environment.apiUrl}/categories`, { ...request.formGroup.value, validity: true });
   public updateCategory = (request: Update<Category>): Observable<Category> => this.http.patch<Category>(`${environment.apiUrl}/categories/${request.id}`, request.changes);
-  public deleteCategory = (id: string | number): Observable<void> => this.http.patch<void>(`${environment.apiUrl}/categories/${id}`, { validity: false });
-  public restoreCategory = (id: string | number): Observable<void> => this.http.patch<void>(`${environment.apiUrl}/categories/${id}`, { validity: true });
+  public deleteCategory = (id: string): Observable<void> => this.http.patch<void>(`${environment.apiUrl}/categories/${id}`, { validity: false });
+  public restoreCategory = (id: string): Observable<void> => this.http.patch<void>(`${environment.apiUrl}/categories/${id}`, { validity: true });
 }

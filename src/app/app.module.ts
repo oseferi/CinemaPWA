@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatProgressSpinnerModule, MatSpinner, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material';
+import { MatProgressSpinnerModule, MatSpinner, MAT_DIALOG_DEFAULT_OPTIONS, MAT_DIALOG_DATA } from '@angular/material';
 import { CommonModule } from '@angular/common';
 import { AppLayoutModule } from './layout/layout.module';
 import { StoreModule } from '@ngrx/store';
@@ -41,6 +41,10 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
     {
       provide: MAT_DIALOG_DEFAULT_OPTIONS,
       useValue: { disableClose: true, hasBackdrop: true }
+    },
+    {
+      provide: MAT_DIALOG_DATA,
+      useValue: {}
     }
   ],
   bootstrap: [AppComponent],

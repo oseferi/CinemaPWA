@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { Theater, TheaterRequest } from '../models/theater.model';
+import { Update } from '@ngrx/entity';
 
 @Component({
   selector: 'app-theater',
@@ -13,7 +14,7 @@ export class TheaterComponent implements OnInit {
   @Output()
   addedTheater: EventEmitter<TheaterRequest> = new EventEmitter<TheaterRequest>();
   @Output()
-  updatedTheater: EventEmitter<{ id: string, theater: TheaterRequest }> = new EventEmitter<{ id: string, theater: TheaterRequest }>();
+  updatedTheater: EventEmitter<Update<Theater>> = new EventEmitter<Update<Theater>>();
   @Output()
   deletedTheater: EventEmitter<Theater> = new EventEmitter<Theater>();
 
@@ -30,7 +31,7 @@ export class TheaterComponent implements OnInit {
 
   public save(): void {
     if (this.editMode) {
-      this.updatedTheater.emit({ id: this.data.id, theater: this.request });
+      this.updatedTheater.emit({ id: this.data.id, changes: this.request.formGroup.value });
     } else {
       this.addedTheater.emit(this.request);
     }
