@@ -1,7 +1,7 @@
-import { Category } from '../../home/categories/models/category.model';
+import { Category } from '../../categories/models/category.model';
 
 export class Movie {
-  id: number;
+  id: string;
   name: string;
   director: string;
   description: string;

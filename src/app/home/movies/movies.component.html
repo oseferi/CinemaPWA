@@ -1,6 +1,6 @@
 <h1 class="mat-h1">Movies</h1>
 <ul class="movies grid-with-gaps">
-  <li class="g-sm-12 g-md-6 g-lg-6" *ngFor="let movie of movies">
+  <li class="g-sm-12 g-md-6 g-lg-6" *ngFor="let movie of movies$ | async">
     <mat-card>
       <mat-card-header>
         <div *ngIf="movie?.avatarUrl" mat-card-avatar class="mat-elevation-z1" style="margin-right: 16px; background-size: cover;" [style.backgroundImage]="getAvatarUrl(movie?.avatarUrl)"></div>
