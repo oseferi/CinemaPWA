@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
-import { Category, CategoryRequest } from '../../home/categories/models/category.model';
+import { environment } from '../../../../environments/environment';
+import { Category, CategoryRequest } from '../models/category.model';
 import { Update } from '@ngrx/entity';
 
 @Injectable({

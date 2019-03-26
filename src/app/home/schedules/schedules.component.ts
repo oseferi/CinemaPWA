@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ScheduleService } from '../../core/services/schedule.service';
+import { ScheduleService } from './services/schedule.service';
 import { PageEvent, MatDialogRef, MatDialog, MatSnackBar } from '@angular/material';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { ScheduleRequest, Schedule } from '../../core/models/schedule.model';

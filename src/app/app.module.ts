@@ -8,7 +8,6 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatProgressSpinnerModule, MatSpinner, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material';
-import { CoreModule } from './core/core.module';
 import { CommonModule } from '@angular/common';
 import { AppLayoutModule } from './layout/layout.module';
 import { StoreModule } from '@ngrx/store';
@@ -32,7 +31,6 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     BrowserAnimationsModule,
     MatProgressSpinnerModule,
-    CoreModule,
     AppLayoutModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     EffectsModule.forRoot([AppEffects]),

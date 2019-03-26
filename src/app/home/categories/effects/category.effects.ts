@@ -3,7 +3,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { LoadCategoriesFailure, LoadCategoriesSuccess, CategoryActionTypes, CategoryActions, AddCategory, AddCategorySuccess, AddCategoryFailure, UpdateCategory, UpdateCategorySuccess, UpdateCategoryFailure, DeleteCategory, DeleteCategorySuccess, DeleteCategoryFailure, RestoreCategory, RestoreCategorySuccess, RestoreCategoryFailure } from '../actions/category.actions';
-import { CategoryService } from '../../../core/services/category.service';
+import { CategoryService } from '../services/category.service';
 import { Category } from '../models/category.model';
 
 @Injectable()

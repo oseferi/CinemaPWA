@@ -3,7 +3,7 @@ import { Actions, Effect, ofType } from '@ngrx/effects';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { LoadTheatersFailure, LoadTheatersSuccess, TheaterActionTypes, TheaterActions, AddTheater, AddTheaterSuccess, AddTheaterFailure, UpdateTheater, UpdateTheaterSuccess, UpdateTheaterFailure, DeleteTheater, DeleteTheaterSuccess, DeleteTheaterFailure, RestoreTheater, RestoreTheaterSuccess, RestoreTheaterFailure } from '../actions/theater.actions';
-import { TheaterService } from '../../../core/services/theater.service';
+import { TheaterService } from '../services/theater.service';
 import { Theater } from '../models/theater.model';
 
 @Injectable()

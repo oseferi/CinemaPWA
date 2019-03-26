@@ -68,7 +68,7 @@ export class TheatersComponent implements OnInit, OnDestroy {
   }
 
   private onDeletedTheater(theater: Theater): void {
-    this.store.dispatch(new DeleteTheater({ theater }))
+    this.store.dispatch(new DeleteTheater({ theater }));
   }
 
   private showUndoSnackbar(theater: Theater): void {

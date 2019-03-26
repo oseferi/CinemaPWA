@@ -3,10 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog, MatSnackBar, MatDialogRef } from '@angular/material';
 import { Movie } from '../../core/models/movie.model';
-import { MovieService } from '../../core/services/movie.service';
+import { MovieService } from './services/movie.service';
 import { ScheduleComponent } from '../schedules/schedule/schedule.component';
 import { ScheduleRequest } from '../../core/models/schedule.model';
-import { ScheduleService } from '../../core/services/schedule.service';
+import { ScheduleService } from '../schedules/services/schedule.service';
 
 @Component({
   selector: 'app-movies',

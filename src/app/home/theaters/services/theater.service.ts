@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 import { Update } from '@ngrx/entity';
-import { Theater, TheaterRequest } from '../../home/theaters/models/theater.model';
+import { Theater, TheaterRequest } from '../models/theater.model';
 
 @Injectable({
   providedIn: 'root'
