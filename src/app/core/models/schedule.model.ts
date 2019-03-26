@@ -1,6 +1,6 @@
-import { Theater } from './theater.model';
 import { Movie } from './movie.model';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Theater } from '../../home/theaters/models/theater.model';
 
 export class Schedule {
   id: number;

@@ -1,11 +1,11 @@
 import { Component, OnInit, Output, EventEmitter, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { ScheduleRequest, Schedule } from '../../../core/models/schedule.model';
-import { Theater } from '../../../core/models/theater.model';
 import { TheaterService } from '../../../core/services/theater.service';
 import { Movie } from '../../../core/models/movie.model';
 import { MovieService } from '../../../core/services/movie.service';
 import { ScheduleService } from '../../../core/services/schedule.service';
+import { Theater } from '../../theaters/models/theater.model';
 
 @Component({
   selector: 'app-schedule',

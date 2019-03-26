@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
-import { TheaterRequest, Theater } from '../../../core/models/theater.model';
+import { Theater, TheaterRequest } from '../models/theater.model';
 
 @Component({
   selector: 'app-theater',
@@ -13,9 +13,9 @@ export class TheaterComponent implements OnInit {
   @Output()
   addedTheater: EventEmitter<TheaterRequest> = new EventEmitter<TheaterRequest>();
   @Output()
-  updatedTheater: EventEmitter<{ id: number, theater: TheaterRequest }> = new EventEmitter<{ id: number, theater: TheaterRequest }>();
+  updatedTheater: EventEmitter<{ id: string, theater: TheaterRequest }> = new EventEmitter<{ id: string, theater: TheaterRequest }>();
   @Output()
-  deletedTheater: EventEmitter<number> = new EventEmitter<number>();
+  deletedTheater: EventEmitter<Theater> = new EventEmitter<Theater>();
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: Theater
@@ -37,6 +37,6 @@ export class TheaterComponent implements OnInit {
   }
 
   public delete(): void {
-    this.deletedTheater.emit(this.data.id);
+    this.deletedTheater.emit(this.data);
   }
 }

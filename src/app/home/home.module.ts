@@ -16,6 +16,8 @@ import { StoreModule } from '@ngrx/store';
 import * as fromCategory from './categories/reducers/category.reducer';
 import { EffectsModule } from '@ngrx/effects';
 import { CategoryEffects } from './categories/effects/category.effects';
+import * as fromTheater from './theaters/reducers/theater.reducer';
+import { TheaterEffects } from './theaters/effects/theater.effects';
 
 @NgModule({
   imports: [
@@ -42,7 +44,11 @@ import { CategoryEffects } from './categories/effects/category.effects';
     MatDatepickerModule,
     MatNativeDateModule,
     StoreModule.forFeature('category', fromCategory.categoryReducer),
-    EffectsModule.forFeature([CategoryEffects])
+    EffectsModule.forFeature([
+      CategoryEffects,
+      TheaterEffects
+    ]),
+    StoreModule.forFeature('theater', fromTheater.theaterReducer)
   ],
   declarations: [
     MoviesComponent,

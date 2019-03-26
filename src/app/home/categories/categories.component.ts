@@ -15,9 +15,9 @@ import { map } from 'rxjs/operators';
 })
 export class CategoriesComponent implements OnInit, OnDestroy {
   private actionsSubjectSubscription: Subscription;
+  private dialogRef: MatDialogRef<CategoryComponent>;
   categories$: Observable<Category[]>;
   displayedColumns: string[] = ['name'];
-  dialogRef: MatDialogRef<CategoryComponent>;
 
   constructor(
     private store: Store<fromCategory.CategoryState>,
