@@ -1,2 +1,2 @@
-<app-generic-table [data]="schedules" (pageChange)="onPageChange($event)" [displayedColumns]="displayedColumns" [clickableRows]="true" (rowClick)="onRowClick($event)"></app-generic-table>
+<app-generic-table [data]="schedules$ | async" (pageChange)="onPageChange($event)" [displayedColumns]="displayedColumns" [clickableRows]="true" (rowClick)="onRowClick($event)"></app-generic-table>
 <button mat-fab (click)="add()"><mat-icon>add</mat-icon></button>

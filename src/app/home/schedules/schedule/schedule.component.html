@@ -2,14 +2,14 @@
 <form mat-dialog-content [formGroup]="request?.formGroup">
   <mat-form-field>
     <mat-select placeholder="Theater" formControlName="theater" [compareWith]="dropdownCompareFn">
-      <mat-option *ngFor="let theater of theaters" [value]="theater">
+      <mat-option *ngFor="let theater of theaters$ | async" [value]="theater">
         {{ theater?.number }}
       </mat-option>
     </mat-select>
   </mat-form-field>
   <mat-form-field *ngIf="!preselectedMovie">
     <mat-select placeholder="Movie" formControlName="movie" [compareWith]="dropdownCompareFn">
-      <mat-option *ngFor="let movie of movies" [value]="movie">
+      <mat-option *ngFor="let movie of movies$ | async" [value]="movie">
         {{ movie?.name }}
       </mat-option>
     </mat-select>
