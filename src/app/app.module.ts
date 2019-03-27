@@ -23,7 +23,7 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
   ],
   imports: [
     CommonModule,
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     HttpClientModule,
     HttpClientXsrfModule,
     NgHttpLoaderModule,
