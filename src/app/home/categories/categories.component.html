@@ -1,2 +1,2 @@
 <app-generic-table [data]="categories$ | async" (pageChange)="onPageChange($event)" [displayedColumns]="displayedColumns" [clickableRows]="true" (rowClick)="onRowClick($event)"></app-generic-table>
-<button mat-fab (click)="add()"><mat-icon>add</mat-icon></button>
+<button mat-fab (click)="add()" name="fab"><mat-icon>add</mat-icon></button>

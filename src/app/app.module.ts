@@ -44,7 +44,7 @@ import { StoreRouterConnectingModule } from '@ngrx/router-store';
     },
     {
       provide: MAT_DIALOG_DATA,
-      useValue: {}
+      useValue: null
     }
   ],
   bootstrap: [AppComponent],

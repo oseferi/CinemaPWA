@@ -29,7 +29,7 @@
   </mat-form-field>
 </form>
 <div mat-dialog-actions>
-  <button [disabled]="request?.formGroup?.invalid" mat-button (click)="save()" color="primary">Save</button>
-  <button mat-button [mat-dialog-close] color="accent">Cancel</button>
-  <button *ngIf="editMode" mat-button [mat-dialog-close] (click)="delete()" color="warn">Delete</button>
+  <button [disabled]="request?.formGroup?.invalid" mat-button (click)="save()" color="primary" name="save">Save</button>
+  <button mat-button [mat-dialog-close] color="accent" name="cancel">Cancel</button>
+  <button *ngIf="editMode" mat-button [mat-dialog-close] (click)="delete()" color="warn" name="delete">Delete</button>
 </div>

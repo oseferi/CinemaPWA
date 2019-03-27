@@ -24,8 +24,8 @@
           <a *ngIf="movie?.ratingUrl" [href]="movie?.ratingUrl" target="_blank">IMDb</a>
       </mat-card-content>
       <mat-card-actions>
-        <button mat-button color="primary" (click)="watchTrailer(movie?.trailerUrl)">Trailer</button>
-        <button mat-button color="accent" (click)="scheduleMovie(movie)">Schedule</button>
+        <button mat-button color="primary" (click)="watchTrailer(movie?.trailerUrl)" name="trailer">Trailer</button>
+        <button mat-button color="accent" (click)="scheduleMovie(movie)" name="schedule">Schedule</button>
       </mat-card-actions>
     </mat-card>
   </li>
