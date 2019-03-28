@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
-import { Category, CategoryRequest } from '../models/category.model';
+import { Category } from '../models/category.model';
 
 export enum CategoryActionTypes {
   LoadCategories = '[Category] Load Categories',
@@ -39,7 +39,7 @@ export class LoadCategoriesFailure implements Action {
 export class AddCategory implements Action {
   readonly type = CategoryActionTypes.AddCategory;
 
-  constructor(public payload: { category: CategoryRequest }) {}
+  constructor(public payload: { category: Partial<Category> }) {}
 }
 
 export class AddCategorySuccess implements Action {

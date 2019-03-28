@@ -1,7 +1,9 @@
-import { Component, Output, EventEmitter, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { Category, CategoryRequest } from '../models/category.model';
-import { Update } from '@ngrx/entity';
+import { Store } from '@ngrx/store';
+import * as fromCategory from '../reducers/category.reducer';
+import { UpdateCategory, AddCategory, DeleteCategory } from '../actions/category.actions';
 
 @Component({
   selector: 'app-category',
@@ -11,15 +13,10 @@ import { Update } from '@ngrx/entity';
 export class CategoryComponent implements OnInit {
   editMode = false;
   request: CategoryRequest = new CategoryRequest();
-  @Output()
-  addedCategory: EventEmitter<CategoryRequest> = new EventEmitter<CategoryRequest>();
-  @Output()
-  updatedCategory: EventEmitter<Update<Category>> = new EventEmitter<Update<Category>>();
-  @Output()
-  deletedCategory: EventEmitter<Category> = new EventEmitter<Category>();
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) private data: Category
+    @Inject(MAT_DIALOG_DATA) private data: Category,
+    private store: Store<fromCategory.CategoryState>
   ) { }
 
   ngOnInit(): void {
@@ -31,13 +28,13 @@ export class CategoryComponent implements OnInit {
 
   public save(): void {
     if (this.editMode) {
-      this.updatedCategory.emit({ id: this.data.id, changes: this.request.formGroup.value });
+      this.store.dispatch(new UpdateCategory({ category: { id: this.data.id, changes: this.request.formGroup.value } }));
     } else {
-      this.addedCategory.emit(this.request);
+      this.store.dispatch(new AddCategory({ category: this.request.formGroup.value }));
     }
   }
 
   public delete(): void {
-    this.deletedCategory.emit(this.data);
+    this.store.dispatch(new DeleteCategory({ category: this.data }));
   }
 }
