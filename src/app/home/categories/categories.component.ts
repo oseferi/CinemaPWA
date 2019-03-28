@@ -1,5 +1,5 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { PageEvent, MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
 import { CategoryComponent } from './category/category.component';
 import { Category } from './models/category.model';
 import { Observable, Subscription } from 'rxjs';
@@ -11,7 +11,8 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-categories',
   templateUrl: './categories.component.html',
-  styleUrls: ['./categories.component.scss']
+  styleUrls: ['./categories.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CategoriesComponent implements OnInit, OnDestroy {
   private actionsSubjectSubscription: Subscription;
@@ -49,17 +50,13 @@ export class CategoriesComponent implements OnInit, OnDestroy {
     this.actionsSubjectSubscription.unsubscribe();
   }
 
-  public onPageChange(event: PageEvent) {
-    console.log(event);
+  private showUndoSnackbar(category: Category): void {
+    const snackBarRef = this.snackBar.open(`Category "${category.name}" deleted successfully!`, 'Undo', { duration: 4000 });
+    snackBarRef.onAction().subscribe(() => this.store.dispatch(new RestoreCategory({ category })));
   }
 
   public add(): void {
     this.dialogRef = this.dialog.open(CategoryComponent);
-  }
-
-  private showUndoSnackbar(category: Category): void {
-    const snackBarRef = this.snackBar.open(`Category "${category.name}" deleted successfully!`, 'Undo', { duration: 4000 });
-    snackBarRef.onAction().subscribe(() => this.store.dispatch(new RestoreCategory({ category })));
   }
 
   public onRowClick(category: Category): void {

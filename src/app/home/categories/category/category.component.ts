@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { Category, CategoryRequest } from '../models/category.model';
 import { Store } from '@ngrx/store';
@@ -8,7 +8,8 @@ import { UpdateCategory, AddCategory, DeleteCategory } from '../actions/category
 @Component({
   selector: 'app-category',
   templateUrl: './category.component.html',
-  styleUrls: ['./category.component.scss']
+  styleUrls: ['./category.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CategoryComponent implements OnInit {
   editMode = false;
