@@ -1,18 +1,18 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { PageEvent, MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import {  MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
 import { TheaterComponent } from './theater/theater.component';
 import * as fromTheater from './reducers/theater.reducer';
 import { Store, select, ActionsSubject } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { LoadTheaters, TheaterActionTypes, TheaterActions, RestoreTheater, AddTheater, UpdateTheater, DeleteTheater } from './actions/theater.actions';
+import { LoadTheaters, TheaterActionTypes, TheaterActions, RestoreTheater } from './actions/theater.actions';
 import { map } from 'rxjs/operators';
-import { Theater, TheaterRequest } from './models/theater.model';
-import { Update } from '@ngrx/entity';
+import { Theater } from './models/theater.model';
 
 @Component({
   selector: 'app-theaters',
   templateUrl: './theaters.component.html',
-  styleUrls: ['./theaters.component.scss']
+  styleUrls: ['./theaters.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TheatersComponent implements OnInit, OnDestroy {
   private actionsSubjectSubscription: Subscription;
@@ -50,40 +50,16 @@ export class TheatersComponent implements OnInit, OnDestroy {
     this.actionsSubjectSubscription.unsubscribe();
   }
 
-  public onPageChange(event: PageEvent) {
-    console.log(event);
-  }
-
-  public add(): void {
-    this.dialogRef = this.dialog.open(TheaterComponent);
-    const subscription = this.dialogRef.componentInstance.addedTheater.subscribe((theater: TheaterRequest) => this.onAddedTheater(theater));
-    this.dialogRef.afterClosed().subscribe(() => subscription.unsubscribe());
-  }
-
-  private onAddedTheater(theater: TheaterRequest): void {
-    this.store.dispatch(new AddTheater({ theater }));
-  }
-
-  private onUpdatedTheater(theater: Update<Theater>): void {
-    this.store.dispatch(new UpdateTheater({ theater }));
-  }
-
-  private onDeletedTheater(theater: Theater): void {
-    this.store.dispatch(new DeleteTheater({ theater }));
-  }
-
   private showUndoSnackbar(theater: Theater): void {
     const snackBarRef = this.snackBar.open(`Theater number ${theater.number} deleted successfully!`, 'Undo', { duration: 4000 });
     snackBarRef.onAction().subscribe(() => this.store.dispatch(new RestoreTheater({ theater })));
   }
 
+  public add(): void {
+    this.dialogRef = this.dialog.open(TheaterComponent);
+  }
+
   public onRowClick(selectedTheater: Theater): void {
     this.dialogRef = this.dialog.open(TheaterComponent, { data: selectedTheater });
-    const updateSubscription = this.dialogRef.componentInstance.updatedTheater.subscribe((theater: Update<Theater>) => this.onUpdatedTheater(theater));
-    const deleteSubscription = this.dialogRef.componentInstance.deletedTheater.subscribe((theater: Theater) => this.onDeletedTheater(theater));
-    this.dialogRef.afterClosed().subscribe(() => {
-      updateSubscription.unsubscribe();
-      deleteSubscription.unsubscribe();
-    });
   }
 }

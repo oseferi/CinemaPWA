@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
-import { Theater, TheaterRequest } from '../models/theater.model';
+import { Theater } from '../models/theater.model';
 
 export enum TheaterActionTypes {
   LoadTheaters = '[Theater] Load Theaters',
@@ -39,7 +39,7 @@ export class LoadTheatersFailure implements Action {
 export class AddTheater implements Action {
   readonly type = TheaterActionTypes.AddTheater;
 
-  constructor(public payload: { theater: TheaterRequest }) {}
+  constructor(public payload: { theater: Partial<Theater> }) {}
 }
 
 export class AddTheaterSuccess implements Action {
