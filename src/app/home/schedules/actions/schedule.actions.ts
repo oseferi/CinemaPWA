@@ -1,6 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Update } from '@ngrx/entity';
-import { Schedule, ScheduleRequest } from '../models/schedule.model';
+import { Schedule } from '../models/schedule.model';
 
 export enum ScheduleActionTypes {
   LoadSchedules = '[Schedule] Load Schedules',
@@ -39,7 +39,7 @@ export class LoadSchedulesFailure implements Action {
 export class AddSchedule implements Action {
   readonly type = ScheduleActionTypes.AddSchedule;
 
-  constructor(public payload: { schedule: ScheduleRequest }) {}
+  constructor(public payload: { schedule: Partial<Schedule> }) {}
 }
 
 export class AddScheduleSuccess implements Action {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { ScheduleRequest, Schedule } from '../models/schedule.model';
 import { Movie } from '../../movies/models/movie.model';
@@ -11,12 +11,13 @@ import { State } from '../../../reducers';
 import { map } from 'rxjs/operators';
 import { LoadTheaters } from '../../theaters/actions/theater.actions';
 import { LoadMovies } from '../../movies/actions/movie.actions';
-import { Update } from '@ngrx/entity';
+import { UpdateSchedule, AddSchedule, DeleteSchedule } from '../actions/schedule.actions';
 
 @Component({
   selector: 'app-schedule',
   templateUrl: './schedule.component.html',
-  styleUrls: ['./schedule.component.scss']
+  styleUrls: ['./schedule.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ScheduleComponent implements OnInit {
   today = new Date();
@@ -25,12 +26,6 @@ export class ScheduleComponent implements OnInit {
   request: ScheduleRequest = new ScheduleRequest();
   theaters$: Observable<Theater[]>;
   movies$: Observable<Movie[]>;
-  @Output()
-  addedSchedule: EventEmitter<ScheduleRequest> = new EventEmitter<ScheduleRequest>();
-  @Output()
-  updatedSchedule: EventEmitter<Update<Schedule>> = new EventEmitter<Update<Schedule>>();
-  @Output()
-  deletedSchedule: EventEmitter<Schedule> = new EventEmitter<Schedule>();
 
   constructor(
     @Inject(MAT_DIALOG_DATA) private data: Schedule | Movie,
@@ -81,14 +76,14 @@ export class ScheduleComponent implements OnInit {
     const date = new Date(this.request.formGroup.get('date').value);
     this.request.formGroup.get('date').setValue(`${date.getFullYear()}-${date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1}-${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`);
     if (this.editMode) {
-      this.updatedSchedule.emit({ id: this.data.id, changes: this.request.formGroup.value });
+      this.store.dispatch(new UpdateSchedule({ schedule: { id: this.data.id, changes: this.request.formGroup.value } }));
     } else {
-      this.addedSchedule.emit(this.request);
+      this.store.dispatch(new AddSchedule({ schedule: this.request.formGroup.value }));
     }
   }
 
   public delete(): void {
-    this.deletedSchedule.emit(this.data as Schedule);
+    this.store.dispatch(new DeleteSchedule({ schedule: this.data as Schedule }));
   }
 
   public dropdownCompareFn = (obj1: any, obj2: any): boolean => obj1 && obj2 ? obj1.id === obj2.id : obj1 === obj2;
