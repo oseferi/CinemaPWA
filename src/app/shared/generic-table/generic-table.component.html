@@ -1,6 +1,6 @@
 <!-- WITH FILTER -->
 <mat-form-field *ngIf="filtering">
-  <input matInput (keyup)="applyFilter()" placeholder="Search">
+  <input matInput (keyup)="applyFilter()" placeholder="Search" autocomplete="off">
   <mat-icon matSuffix>search</mat-icon>
 </mat-form-field>
 <!-- WITH SORT -->
@@ -32,11 +32,4 @@
   </div>
 </mat-table>
 <!-- WITH PAGINATION -->
-<mat-paginator
-  *ngIf="pagination"
-  [length]="dataSource?.data?.length"
-  [pageIndex]="0"
-  [pageSize]="pageSize"
-  [pageSizeOptions]="pageSizeOptions"
-  (page)="pageChange.emit($event)">
-</mat-paginator>
+<mat-paginator *ngIf="pagination" [length]="dataSource?.data?.length" [pageIndex]="0" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions" (page)="pageChange.emit($event)"></mat-paginator>

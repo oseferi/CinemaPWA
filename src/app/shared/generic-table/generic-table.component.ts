@@ -1,12 +1,11 @@
-import { Component, Input, ViewChild, OnChanges, Output, EventEmitter } from '@angular/core';
+import { Component, Input, ViewChild, OnChanges, Output, EventEmitter, ChangeDetectionStrategy } from '@angular/core';
 import { MatSort, MatTableDataSource, MatPaginator, MatInput } from '@angular/material';
-import { pluck } from 'rxjs/operators';
-import { of } from 'rxjs';
 
 @Component({
   selector: 'app-generic-table',
   templateUrl: './generic-table.component.html',
-  styleUrls: ['./generic-table.component.scss']
+  styleUrls: ['./generic-table.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class GenericTableComponent<T> implements OnChanges {
   @ViewChild(MatInput) filterInput: MatInput;

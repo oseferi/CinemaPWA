@@ -1,13 +1,16 @@
 <h1 mat-dialog-title>{{ editMode ? 'Edit Theater' : 'New Theater' }}</h1>
 <form mat-dialog-content [formGroup]="request?.formGroup">
   <mat-form-field>
-    <input matInput type="number" formControlName="number" placeholder="Number">
+    <input matInput type="number" formControlName="number" placeholder="Number" autocomplete="off">
+    <mat-error *ngIf="request?.formGroup?.get('number')?.hasError('required')">Number is <strong>required</strong>!</mat-error>
   </mat-form-field>
   <mat-form-field>
-    <input matInput type="number" formControlName="floor" placeholder="Floor">
+    <input matInput type="number" formControlName="floor" placeholder="Floor" autocomplete="off">
+    <mat-error *ngIf="request?.formGroup?.get('floor')?.hasError('required')">Floor is <strong>required</strong>!</mat-error>
   </mat-form-field>
   <mat-form-field>
-    <input matInput type="number" formControlName="capacity" placeholder="Capacity">
+    <input matInput type="number" formControlName="capacity" placeholder="Capacity" autocomplete="off">
+    <mat-error *ngIf="request?.formGroup?.get('capacity')?.hasError('required')">Capacity is <strong>required</strong>!</mat-error>
   </mat-form-field>
 </form>
 <div mat-dialog-actions>

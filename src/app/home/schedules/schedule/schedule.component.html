@@ -6,6 +6,7 @@
         {{ theater?.number }}
       </mat-option>
     </mat-select>
+    <mat-error *ngIf="request?.formGroup?.get('theater')?.hasError('required')">Theater is <strong>required</strong>!</mat-error>
   </mat-form-field>
   <mat-form-field *ngIf="!preselectedMovie">
     <mat-select placeholder="Movie" formControlName="movie" [compareWith]="dropdownCompareFn">
@@ -13,19 +14,23 @@
         {{ movie?.name }}
       </mat-option>
     </mat-select>
+    <mat-error *ngIf="request?.formGroup?.get('movie')?.hasError('required')">Movie is <strong>required</strong>!</mat-error>
   </mat-form-field>
   <mat-form-field>
     <input matInput formControlName="date" [min]="today" [matDatepicker]="datePicker" placeholder="Date">
     <mat-datepicker-toggle matSuffix [for]="datePicker"></mat-datepicker-toggle>
     <mat-datepicker #datePicker></mat-datepicker>
+    <mat-error *ngIf="request?.formGroup?.get('date')?.hasError('required')">Date is <strong>required</strong>!</mat-error>
   </mat-form-field>
   <mat-form-field>
     <input matInput formControlName="time" placeholder="Time" type="time">
+    <mat-error *ngIf="request?.formGroup?.get('time')?.hasError('required')">Time is <strong>required</strong>!</mat-error>
   </mat-form-field>
   <mat-form-field>
     <input matInput formControlName="price" placeholder="Price" type="number">
     <span matPrefix>$&nbsp;</span>
     <span matSuffix>.00</span>
+    <mat-error *ngIf="request?.formGroup?.get('price')?.hasError('required')">Price is <strong>required</strong>!</mat-error>
   </mat-form-field>
 </form>
 <div mat-dialog-actions>

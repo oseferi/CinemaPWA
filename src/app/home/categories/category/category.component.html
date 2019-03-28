@@ -1,7 +1,8 @@
 <h1 mat-dialog-title>{{ editMode ? 'Edit Category' : 'New Category' }}</h1>
 <form mat-dialog-content [formGroup]="request?.formGroup">
   <mat-form-field>
-    <input matInput formControlName="name" placeholder="Name">
+    <input matInput formControlName="name" placeholder="Name" autocomplete="off">
+    <mat-error *ngIf="request?.formGroup?.get('name')?.hasError('required')">Name is <strong>required</strong>!</mat-error>
   </mat-form-field>
 </form>
 <div mat-dialog-actions>
