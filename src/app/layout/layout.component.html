@@ -6,11 +6,9 @@
     <span style="margin-left: 8px;">CinemaPWA</span>
   </mat-toolbar>
 </header>
+<mat-progress-bar [style.position]="'absolute'" [style.top]="'64px'" [style.width]="'100%'" [style.zIndex]="100" *ngIf="loadingBarService.progress$ | async as progress" mode="determinate" color="accent" [value]="progress"></mat-progress-bar>
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #drawer class="sidenav"
-      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
-      [mode]="(isHandset$ | async) ? 'over' : 'side'"
-      [opened]="(isHandset$ | async) ? false : true">
+  <mat-sidenav #drawer class="sidenav" [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'" [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) ? false : true">
     <mat-toolbar>Menu</mat-toolbar>
     <mat-nav-list>
       <a mat-list-item *ngFor="let route of homeRoutes" [routerLink]="route?.path" routerLinkActive="active" (click)="(drawer?.mode === 'over') ? drawer.close() : ''">
