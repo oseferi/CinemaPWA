@@ -1,16 +1,16 @@
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { Category } from '../models/category.model';
 import { CategoryActions, CategoryActionTypes } from '../actions/category.actions';
-import { createFeatureSelector } from '@ngrx/store';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 export interface CategoryState extends EntityState<Category> {
-  // additional entities state properties
+  categoriesLoaded: boolean;
 }
 
 export const adapter: EntityAdapter<Category> = createEntityAdapter<Category>({ sortComparer: (a: Category, b: Category) => a.id < b.id ? -1 : 1 });
 
 export const initialState: CategoryState = adapter.getInitialState({
-  // additional entity state properties
+  categoriesLoaded: false
 });
 
 export function categoryReducer(
@@ -19,7 +19,7 @@ export function categoryReducer(
 ): CategoryState {
   switch (action.type) {
     case CategoryActionTypes.LoadCategoriesSuccess: {
-      return adapter.addAll(action.payload.categories, state);
+      return adapter.addAll(action.payload.categories, { ...state, categoriesLoaded: true });
     }
 
     case CategoryActionTypes.AddCategorySuccess: {
@@ -52,3 +52,8 @@ export const {
   selectAll,
   selectTotal,
 } = adapter.getSelectors(selectCategoryState);
+
+export const selectCategoriesLoaded = createSelector(
+  selectCategoryState,
+  (state: CategoryState) => state.categoriesLoaded
+);

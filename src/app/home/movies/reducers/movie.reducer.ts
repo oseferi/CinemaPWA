@@ -1,16 +1,16 @@
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { Movie } from '../models/movie.model';
 import { MovieActions, MovieActionTypes } from '../actions/movie.actions';
-import { createFeatureSelector } from '@ngrx/store';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 export interface MovieState extends EntityState<Movie> {
-  // additional entities state properties
+  moviesLoaded: boolean;
 }
 
 export const adapter: EntityAdapter<Movie> = createEntityAdapter<Movie>();
 
 export const initialState: MovieState = adapter.getInitialState({
-  // additional entity state properties
+  moviesLoaded: false
 });
 
 export function movieReducer(
@@ -19,7 +19,7 @@ export function movieReducer(
 ): MovieState {
   switch (action.type) {
     case MovieActionTypes.LoadMoviesSuccess: {
-      return adapter.addAll(action.payload.movies, state);
+      return adapter.addAll(action.payload.movies, { ...state, moviesLoaded: true });
     }
 
     default: {
@@ -36,3 +36,8 @@ export const {
   selectAll,
   selectTotal,
 } = adapter.getSelectors(selectMovieState);
+
+export const selectMoviesLoaded = createSelector(
+  selectMovieState,
+  (state: MovieState) => state.moviesLoaded
+);

@@ -6,9 +6,8 @@ import { Movie } from './models/movie.model';
 import { ScheduleComponent } from '../schedules/schedule/schedule.component';
 import { Schedule } from '../schedules/models/schedule.model';
 import { Observable, Subscription } from 'rxjs';
-import { Store, select, ActionsSubject } from '@ngrx/store';
+import { Store, ActionsSubject } from '@ngrx/store';
 import * as fromMovie from './reducers/movie.reducer';
-import { map } from 'rxjs/operators';
 import { LoadMovies } from './actions/movie.actions';
 import { ScheduleActionTypes, ScheduleActions } from '../schedules/actions/schedule.actions';
 
@@ -32,15 +31,8 @@ export class MoviesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.movies$ = this.store.pipe(
-      select(fromMovie.selectAll),
-      map((movies: Movie[]) => {
-        if (!movies.length) {
-          this.store.dispatch(new LoadMovies());
-        }
-        return movies;
-      })
-    );
+    this.store.dispatch(new LoadMovies());
+    this.movies$ = this.store.select(fromMovie.selectAll);
     this.actionsSubjectSubscription = this.actionsSubject.subscribe((action: ScheduleActions) => {
       switch (action.type) {
         case ScheduleActionTypes.AddScheduleSuccess: this.onAddedSchedule(action.payload.schedule); return;

@@ -3,10 +3,9 @@ import { MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
 import { CategoryComponent } from './category/category.component';
 import { Category } from './models/category.model';
 import { Observable, Subscription } from 'rxjs';
-import { Store, ActionsSubject, select } from '@ngrx/store';
+import { Store, ActionsSubject } from '@ngrx/store';
 import * as fromCategory from './reducers/category.reducer';
 import { LoadCategories, CategoryActions, CategoryActionTypes, RestoreCategory } from './actions/category.actions';
-import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-categories',
@@ -28,15 +27,8 @@ export class CategoriesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.categories$ = this.store.pipe(
-      select(fromCategory.selectAll),
-      map((categories: Category[]) => {
-        if (!categories.length) {
-          this.store.dispatch(new LoadCategories());
-        }
-        return categories;
-      })
-    );
+    this.store.dispatch(new LoadCategories());
+    this.categories$ = this.store.select(fromCategory.selectAll);
     this.actionsSubjectSubscription = this.actionsSubject.subscribe((action: CategoryActions) => {
       switch (action.type) {
         case CategoryActionTypes.AddCategorySuccess:

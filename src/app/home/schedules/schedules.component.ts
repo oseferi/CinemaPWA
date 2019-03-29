@@ -3,10 +3,9 @@ import { MatDialogRef, MatDialog, MatSnackBar } from '@angular/material';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { Schedule } from './models/schedule.model';
 import { LoadSchedules, ScheduleActions, ScheduleActionTypes, RestoreSchedule } from './actions/schedule.actions';
-import { Store, ActionsSubject, select } from '@ngrx/store';
+import { Store, ActionsSubject } from '@ngrx/store';
 import * as fromSchedule from './reducers/schedule.reducer';
 import { Subscription, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-schedules',
@@ -28,15 +27,8 @@ export class SchedulesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.schedules$ = this.store.pipe(
-      select(fromSchedule.selectAll),
-      map((schedules: Schedule[]) => {
-        if (!schedules.length) {
-          this.store.dispatch(new LoadSchedules());
-        }
-        return schedules;
-      })
-    );
+    this.store.dispatch(new LoadSchedules());
+    this.schedules$ = this.store.select(fromSchedule.selectAll);
     this.actionsSubjectSubscription = this.actionsSubject.subscribe((action: ScheduleActions) => {
       switch (action.type) {
         case ScheduleActionTypes.AddScheduleSuccess:

@@ -2,10 +2,9 @@ import { Component, OnInit, OnDestroy, ChangeDetectionStrategy } from '@angular/
 import {  MatDialog, MatDialogRef, MatSnackBar } from '@angular/material';
 import { TheaterComponent } from './theater/theater.component';
 import * as fromTheater from './reducers/theater.reducer';
-import { Store, select, ActionsSubject } from '@ngrx/store';
+import { Store, ActionsSubject } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { LoadTheaters, TheaterActionTypes, TheaterActions, RestoreTheater } from './actions/theater.actions';
-import { map } from 'rxjs/operators';
 import { Theater } from './models/theater.model';
 
 @Component({
@@ -28,15 +27,8 @@ export class TheatersComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.theaters$ = this.store.pipe(
-      select(fromTheater.selectAll),
-      map((theaters: Theater[]) => {
-        if (!theaters.length) {
-          this.store.dispatch(new LoadTheaters());
-        }
-        return theaters;
-      })
-    );
+    this.store.dispatch(new LoadTheaters());
+    this.theaters$ = this.store.select(fromTheater.selectAll);
     this.actionsSubjectSubscription = this.actionsSubject.subscribe((action: TheaterActions) => {
       switch (action.type) {
         case TheaterActionTypes.AddTheaterSuccess:

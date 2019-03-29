@@ -1,16 +1,16 @@
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { Theater } from '../models/theater.model';
 import { TheaterActions, TheaterActionTypes } from '../actions/theater.actions';
-import { createFeatureSelector } from '@ngrx/store';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 export interface TheaterState extends EntityState<Theater> {
-  // additional entities state properties
+  theatersLoaded: boolean;
 }
 
 export const adapter: EntityAdapter<Theater> = createEntityAdapter<Theater>({ sortComparer: (a: Theater, b: Theater) => a.id < b.id ? -1 : 1 });
 
 export const initialState: TheaterState = adapter.getInitialState({
-  // additional entity state properties
+  theatersLoaded: false
 });
 
 export function theaterReducer(
@@ -19,7 +19,7 @@ export function theaterReducer(
 ): TheaterState {
   switch (action.type) {
     case TheaterActionTypes.LoadTheatersSuccess: {
-      return adapter.addAll(action.payload.categories, state);
+      return adapter.addAll(action.payload.categories, { ...state, theatersLoaded: true });
     }
 
     case TheaterActionTypes.AddTheaterSuccess: {
@@ -52,3 +52,8 @@ export const {
   selectAll,
   selectTotal,
 } = adapter.getSelectors(selectTheaterState);
+
+export const selectTheatersLoaded = createSelector(
+  selectTheaterState,
+  (state: TheaterState) => state.theatersLoaded
+);

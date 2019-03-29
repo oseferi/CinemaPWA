@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, withLatestFrom, filter } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { LoadTheatersFailure, LoadTheatersSuccess, TheaterActionTypes, TheaterActions, AddTheater, AddTheaterSuccess, AddTheaterFailure, UpdateTheater, UpdateTheaterSuccess, UpdateTheaterFailure, DeleteTheater, DeleteTheaterSuccess, DeleteTheaterFailure, RestoreTheater, RestoreTheaterSuccess, RestoreTheaterFailure } from '../actions/theater.actions';
 import { TheaterService } from '../services/theater.service';
 import { Theater } from '../models/theater.model';
+import { Store } from '@ngrx/store';
+import * as fromTheater from '../reducers/theater.reducer';
 
 @Injectable()
 export class TheaterEffects {
@@ -12,6 +14,8 @@ export class TheaterEffects {
   @Effect()
   loadTheaters$ = this.actions$.pipe(
     ofType(TheaterActionTypes.LoadTheaters),
+    withLatestFrom(this.store.select(fromTheater.selectTheatersLoaded)),
+    filter(([action, theatersLoaded]) => !theatersLoaded),
     switchMap(() => this.theaterService.getTheaters().pipe(
       map((response: Theater[]) => new LoadTheatersSuccess({ categories: response })),
       catchError(error => of(new LoadTheatersFailure({ error }))))
@@ -54,5 +58,5 @@ export class TheaterEffects {
     )
   );
 
-  constructor(private actions$: Actions<TheaterActions>, private theaterService: TheaterService) { }
+  constructor(private actions$: Actions<TheaterActions>, private theaterService: TheaterService, private store: Store<fromTheater.TheaterState>) { }
 }

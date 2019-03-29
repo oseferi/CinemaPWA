@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, withLatestFrom, filter } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { LoadSchedulesFailure, LoadSchedulesSuccess, ScheduleActionTypes, ScheduleActions, AddSchedule, AddScheduleSuccess, AddScheduleFailure, UpdateSchedule, UpdateScheduleSuccess, UpdateScheduleFailure, DeleteSchedule, DeleteScheduleSuccess, DeleteScheduleFailure, RestoreSchedule, RestoreScheduleSuccess, RestoreScheduleFailure } from '../actions/schedule.actions';
 import { ScheduleService } from '../services/schedule.service';
 import { Schedule } from '../models/schedule.model';
+import * as fromSchedule from '../reducers/schedule.reducer';
+import { Store } from '@ngrx/store';
 
 @Injectable()
 export class ScheduleEffects {
@@ -12,6 +14,8 @@ export class ScheduleEffects {
   @Effect()
   loadSchedules$ = this.actions$.pipe(
     ofType(ScheduleActionTypes.LoadSchedules),
+    withLatestFrom(this.store.select(fromSchedule.selectSchedulesLoaded)),
+    filter(([action, schedulesLoaded]) => !schedulesLoaded),
     switchMap(() => this.scheduleService.getSchedules().pipe(
       map((response: Schedule[]) => new LoadSchedulesSuccess({ categories: response })),
       catchError(error => of(new LoadSchedulesFailure({ error }))))
@@ -54,5 +58,5 @@ export class ScheduleEffects {
     )
   );
 
-  constructor(private actions$: Actions<ScheduleActions>, private scheduleService: ScheduleService) { }
+  constructor(private actions$: Actions<ScheduleActions>, private scheduleService: ScheduleService, private store: Store<fromSchedule.ScheduleState>) { }
 }

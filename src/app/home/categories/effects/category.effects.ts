@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { catchError, map, switchMap } from 'rxjs/operators';
+import { catchError, map, switchMap, withLatestFrom, filter } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { LoadCategoriesFailure, LoadCategoriesSuccess, CategoryActionTypes, CategoryActions, AddCategory, AddCategorySuccess, AddCategoryFailure, UpdateCategory, UpdateCategorySuccess, UpdateCategoryFailure, DeleteCategory, DeleteCategorySuccess, DeleteCategoryFailure, RestoreCategory, RestoreCategorySuccess, RestoreCategoryFailure } from '../actions/category.actions';
 import { CategoryService } from '../services/category.service';
 import { Category } from '../models/category.model';
+import { Store } from '@ngrx/store';
+import * as fromCategory from '../reducers/category.reducer';
 
 @Injectable()
 export class CategoryEffects {
@@ -12,6 +14,8 @@ export class CategoryEffects {
   @Effect()
   loadCategories$ = this.actions$.pipe(
     ofType(CategoryActionTypes.LoadCategories),
+    withLatestFrom(this.store.select(fromCategory.selectCategoriesLoaded)),
+    filter(([action, categoriesLoaded]) => !categoriesLoaded),
     switchMap(() => this.categoryService.getCategories().pipe(
       map((response: Category[]) => new LoadCategoriesSuccess({ categories: response })),
       catchError(error => of(new LoadCategoriesFailure({ error }))))
@@ -54,5 +58,5 @@ export class CategoryEffects {
     )
   );
 
-  constructor(private actions$: Actions<CategoryActions>, private categoryService: CategoryService) { }
+  constructor(private actions$: Actions<CategoryActions>, private categoryService: CategoryService, private store: Store<fromCategory.CategoryState>) { }
 }

@@ -1,16 +1,16 @@
 import { EntityState, EntityAdapter, createEntityAdapter } from '@ngrx/entity';
 import { Schedule } from '../models/schedule.model';
 import { ScheduleActions, ScheduleActionTypes } from '../actions/schedule.actions';
-import { createFeatureSelector } from '@ngrx/store';
+import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 export interface ScheduleState extends EntityState<Schedule> {
-  // additional entities state properties
+  schedulesLoaded: boolean;
 }
 
 export const adapter: EntityAdapter<Schedule> = createEntityAdapter<Schedule>({ sortComparer: (a: Schedule, b: Schedule) => a.id < b.id ? -1 : 1 });
 
 export const initialState: ScheduleState = adapter.getInitialState({
-  // additional entity state properties
+  schedulesLoaded: false
 });
 
 export function scheduleReducer(
@@ -19,7 +19,7 @@ export function scheduleReducer(
 ): ScheduleState {
   switch (action.type) {
     case ScheduleActionTypes.LoadSchedulesSuccess: {
-      return adapter.addAll(action.payload.categories, state);
+      return adapter.addAll(action.payload.categories, { ...state, schedulesLoaded: true });
     }
 
     case ScheduleActionTypes.AddScheduleSuccess: {
@@ -52,3 +52,8 @@ export const {
   selectAll,
   selectTotal,
 } = adapter.getSelectors(selectScheduleState);
+
+export const selectSchedulesLoaded = createSelector(
+  selectScheduleState,
+  (state: ScheduleState) => state.schedulesLoaded
+);
