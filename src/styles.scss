@@ -11,3 +11,6 @@ html, body {
 .mat-form-field {
   width: 100%;
 }
+.mat-snack-bar-container:not(.override) {
+  min-width: unset;
+}
