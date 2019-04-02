@@ -46,7 +46,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
           return;
         case CategoryActionTypes.UpdateCategoryFailure:
           this.snackBarRef = this.matSnackBar.open(`Couldn't update the Category "${this.data.name}" to "${this.request.formGroup.get('name').value}"! ${action.payload.error.status !== undefined ? `Error ${action.payload.error.status}` : ''}`, 'Retry', { duration: 4000 });
-          this.snackBarRef.onAction().pipe(take(1)).subscribe(() => this.store.dispatch(new UpdateCategory({ category: { id: this.data.id, changes: this.request.formGroup.value } })));
+          this.snackBarRef.onAction().pipe(take(1)).subscribe(() => this.store.dispatch(new UpdateCategory({ category: { id: this.data._id, changes: this.request.formGroup.value } })));
           this.request.formGroup.updateValueAndValidity();
           return;
         case CategoryActionTypes.DeleteCategoryFailure:
