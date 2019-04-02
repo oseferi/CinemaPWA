@@ -7,7 +7,12 @@ export interface CategoryState extends EntityState<Category> {
   categoriesLoaded: boolean;
 }
 
-export const adapter: EntityAdapter<Category> = createEntityAdapter<Category>({ sortComparer: (a: Category, b: Category) => a.id < b.id ? -1 : 1 });
+export const adapter: EntityAdapter<Category> = createEntityAdapter<Category>(
+  {
+    sortComparer: (a: Category, b: Category) => a._id < b._id ? -1 : 1,
+    selectId: (category: Category) => category._id
+  }
+);
 
 export const initialState: CategoryState = adapter.getInitialState({
   categoriesLoaded: false
@@ -31,7 +36,7 @@ export function categoryReducer(
     }
 
     case CategoryActionTypes.DeleteCategorySuccess: {
-      return adapter.removeOne(action.payload.category.id, state);
+      return adapter.removeOne(action.payload.category._id, state);
     }
 
     case CategoryActionTypes.RestoreCategorySuccess: {

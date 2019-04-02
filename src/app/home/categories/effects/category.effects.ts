@@ -43,7 +43,7 @@ export class CategoryEffects {
   @Effect()
   deleteCategory$ = this.actions$.pipe(
     ofType(CategoryActionTypes.DeleteCategory),
-    switchMap((action: DeleteCategory) => this.categoryService.deleteCategory(action.payload.category.id).pipe(
+    switchMap((action: DeleteCategory) => this.categoryService.deleteCategory(action.payload.category._id).pipe(
       map(() => new DeleteCategorySuccess(action.payload)),
       catchError(error => of(new DeleteCategoryFailure({ error }))))
     )
@@ -52,7 +52,7 @@ export class CategoryEffects {
   @Effect()
   restoreCategory$ = this.actions$.pipe(
     ofType(CategoryActionTypes.RestoreCategory),
-    switchMap((action: RestoreCategory) => this.categoryService.restoreCategory(action.payload.category.id).pipe(
+    switchMap((action: RestoreCategory) => this.categoryService.restoreCategory(action.payload.category._id).pipe(
       map(() => new RestoreCategorySuccess(action.payload)),
       catchError(error => of(new RestoreCategoryFailure({ error }))))
     )
