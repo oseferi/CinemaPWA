@@ -72,7 +72,7 @@ export class CategoryComponent implements OnInit, OnDestroy {
 
   public save(): void {
     if (this.editMode) {
-      this.store.dispatch(new UpdateCategory({ category: { id: this.data.id, changes: this.request.formGroup.value } }));
+      this.store.dispatch(new UpdateCategory({ category: { id: this.data._id, changes: this.request.formGroup.value } }));
     } else {
       this.store.dispatch(new AddCategory({ category: this.request.formGroup.value }));
     }

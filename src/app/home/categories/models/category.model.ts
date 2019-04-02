@@ -1,7 +1,7 @@
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 export class Category {
-  id: string;
+  _id: string;
   name: string;
 }
 
