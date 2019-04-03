@@ -29,7 +29,7 @@ export class TheaterComponent implements OnInit {
 
   public save(): void {
     if (this.editMode) {
-      this.store.dispatch(new UpdateTheater({ theater: { id: this.data.id, changes: this.request.formGroup.value } }));
+      this.store.dispatch(new UpdateTheater({ theater: { id: this.data._id, changes: this.request.formGroup.value } }));
     } else {
       this.store.dispatch(new AddTheater({ theater: this.request.formGroup.value }));
     }

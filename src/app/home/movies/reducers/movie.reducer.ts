@@ -7,7 +7,10 @@ export interface MovieState extends EntityState<Movie> {
   moviesLoaded: boolean;
 }
 
-export const adapter: EntityAdapter<Movie> = createEntityAdapter<Movie>();
+export const adapter: EntityAdapter<Movie> = createEntityAdapter<Movie>({
+  sortComparer: (a: Movie, b: Movie) => a._id < b._id ? -1 : 1,
+  selectId: (movie: Movie) => movie._id
+});
 
 export const initialState: MovieState = adapter.getInitialState({
   moviesLoaded: false

@@ -1,7 +1,7 @@
 import { Category } from '../../categories/models/category.model';
 
 export class Movie {
-  id: string;
+  _id: string;
   name: string;
   director: string;
   description: string;

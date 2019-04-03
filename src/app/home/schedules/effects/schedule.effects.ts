@@ -43,7 +43,7 @@ export class ScheduleEffects {
   @Effect()
   deleteSchedule$ = this.actions$.pipe(
     ofType(ScheduleActionTypes.DeleteSchedule),
-    switchMap((action: DeleteSchedule) => this.scheduleService.deleteSchedule(action.payload.schedule.id).pipe(
+    switchMap((action: DeleteSchedule) => this.scheduleService.deleteSchedule(action.payload.schedule._id).pipe(
       map(() => new DeleteScheduleSuccess(action.payload)),
       catchError(error => of(new DeleteScheduleFailure({ error }))))
     )
@@ -52,7 +52,7 @@ export class ScheduleEffects {
   @Effect()
   restoreSchedule$ = this.actions$.pipe(
     ofType(ScheduleActionTypes.RestoreSchedule),
-    switchMap((action: RestoreSchedule) => this.scheduleService.restoreSchedule(action.payload.schedule.id).pipe(
+    switchMap((action: RestoreSchedule) => this.scheduleService.restoreSchedule(action.payload.schedule._id).pipe(
       map(() => new RestoreScheduleSuccess(action.payload)),
       catchError(error => of(new RestoreScheduleFailure({ error }))))
     )

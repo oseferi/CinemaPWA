@@ -7,7 +7,10 @@ export interface ScheduleState extends EntityState<Schedule> {
   schedulesLoaded: boolean;
 }
 
-export const adapter: EntityAdapter<Schedule> = createEntityAdapter<Schedule>({ sortComparer: (a: Schedule, b: Schedule) => a.id < b.id ? -1 : 1 });
+export const adapter: EntityAdapter<Schedule> = createEntityAdapter<Schedule>({
+  sortComparer: (a: Schedule, b: Schedule) => a._id < b._id ? -1 : 1,
+  selectId: (schedule: Schedule) => schedule._id
+});
 
 export const initialState: ScheduleState = adapter.getInitialState({
   schedulesLoaded: false
@@ -31,7 +34,7 @@ export function scheduleReducer(
     }
 
     case ScheduleActionTypes.DeleteScheduleSuccess: {
-      return adapter.removeOne(action.payload.schedule.id, state);
+      return adapter.removeOne(action.payload.schedule._id, state);
     }
 
     case ScheduleActionTypes.RestoreScheduleSuccess: {

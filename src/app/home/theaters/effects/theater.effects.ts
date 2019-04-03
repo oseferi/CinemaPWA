@@ -43,7 +43,7 @@ export class TheaterEffects {
   @Effect()
   deleteTheater$ = this.actions$.pipe(
     ofType(TheaterActionTypes.DeleteTheater),
-    switchMap((action: DeleteTheater) => this.theaterService.deleteTheater(action.payload.theater.id).pipe(
+    switchMap((action: DeleteTheater) => this.theaterService.deleteTheater(action.payload.theater._id).pipe(
       map(() => new DeleteTheaterSuccess(action.payload)),
       catchError(error => of(new DeleteTheaterFailure({ error }))))
     )
@@ -52,7 +52,7 @@ export class TheaterEffects {
   @Effect()
   restoreTheater$ = this.actions$.pipe(
     ofType(TheaterActionTypes.RestoreTheater),
-    switchMap((action: RestoreTheater) => this.theaterService.restoreTheater(action.payload.theater.id).pipe(
+    switchMap((action: RestoreTheater) => this.theaterService.restoreTheater(action.payload.theater._id).pipe(
       map(() => new RestoreTheaterSuccess(action.payload)),
       catchError(error => of(new RestoreTheaterFailure({ error }))))
     )

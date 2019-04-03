@@ -76,7 +76,7 @@ export class ScheduleComponent implements OnInit {
     const date = new Date(this.request.formGroup.get('date').value);
     this.request.formGroup.get('date').setValue(`${date.getFullYear()}-${date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1}-${date.getDate() < 10 ? '0' + date.getDate() : date.getDate()}`);
     if (this.editMode) {
-      this.store.dispatch(new UpdateSchedule({ schedule: { id: this.data.id, changes: this.request.formGroup.value } }));
+      this.store.dispatch(new UpdateSchedule({ schedule: { id: this.data._id, changes: this.request.formGroup.value } }));
     } else {
       this.store.dispatch(new AddSchedule({ schedule: this.request.formGroup.value }));
     }

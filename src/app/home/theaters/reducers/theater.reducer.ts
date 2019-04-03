@@ -7,7 +7,10 @@ export interface TheaterState extends EntityState<Theater> {
   theatersLoaded: boolean;
 }
 
-export const adapter: EntityAdapter<Theater> = createEntityAdapter<Theater>({ sortComparer: (a: Theater, b: Theater) => a.id < b.id ? -1 : 1 });
+export const adapter: EntityAdapter<Theater> = createEntityAdapter<Theater>({
+  sortComparer: (a: Theater, b: Theater) => a._id < b._id ? -1 : 1,
+  selectId: (theater: Theater) => theater._id
+});
 
 export const initialState: TheaterState = adapter.getInitialState({
   theatersLoaded: false
@@ -31,7 +34,7 @@ export function theaterReducer(
     }
 
     case TheaterActionTypes.DeleteTheaterSuccess: {
-      return adapter.removeOne(action.payload.theater.id, state);
+      return adapter.removeOne(action.payload.theater._id, state);
     }
 
     case TheaterActionTypes.RestoreTheaterSuccess: {

@@ -3,7 +3,7 @@ import { Theater } from '../../theaters/models/theater.model';
 import { Movie } from '../../movies/models/movie.model';
 
 export class Schedule {
-  id: string;
+  _id: string;
   theater: Theater;
   movie: Movie;
   date: string;
