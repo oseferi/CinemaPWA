@@ -1,0 +1,76 @@
+{
+  "configVersion": 1,
+  "timestamp": 1556878844455,
+  "index": "https://elton47.github.io/CinemaPWA/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "urls": [
+        "https://elton47.github.io/CinemaPWA/1.900e7504055dc211e192.js",
+        "https://elton47.github.io/CinemaPWA/favicon.ico",
+        "https://elton47.github.io/CinemaPWA/index.html",
+        "https://elton47.github.io/CinemaPWA/main.81ee12e4f124e9fe2cc8.js",
+        "https://elton47.github.io/CinemaPWA/polyfills.6f090078fccd1979aaaa.js",
+        "https://elton47.github.io/CinemaPWA/runtime.1abbfbcde7d247aaee04.js",
+        "https://elton47.github.io/CinemaPWA/styles.01a5d86a21050fa93e71.css"
+      ],
+      "patterns": []
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "urls": [
+        "https://elton47.github.io/CinemaPWA/assets/icons/icon-128x128.png",
+        "https://elton47.github.io/CinemaPWA/assets/icons/icon-144x144.png",
+        "https://elton47.github.io/CinemaPWA/assets/icons/icon-152x152.png",
+        "https://elton47.github.io/CinemaPWA/assets/icons/icon-192x192.png",
+        "https://elton47.github.io/CinemaPWA/assets/icons/icon-384x384.png",
+        "https://elton47.github.io/CinemaPWA/assets/icons/icon-512x512.png",
+        "https://elton47.github.io/CinemaPWA/assets/icons/icon-72x72.png",
+        "https://elton47.github.io/CinemaPWA/assets/icons/icon-96x96.png",
+        "https://elton47.github.io/CinemaPWA/assets/scss/_grid.scss"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [],
+  "hashTable": {
+    "https://elton47.github.io/CinemaPWA/1.900e7504055dc211e192.js": "96f5363083f42d60ee88beff06caa1745628d1cc",
+    "https://elton47.github.io/CinemaPWA/assets/icons/icon-128x128.png": "dae3b6ed49bdaf4327b92531d4b5b4a5d30c7532",
+    "https://elton47.github.io/CinemaPWA/assets/icons/icon-144x144.png": "b0bd89982e08f9bd2b642928f5391915b74799a7",
+    "https://elton47.github.io/CinemaPWA/assets/icons/icon-152x152.png": "7479a9477815dfd9668d60f8b3b2fba709b91310",
+    "https://elton47.github.io/CinemaPWA/assets/icons/icon-192x192.png": "1abd80d431a237a853ce38147d8c63752f10933b",
+    "https://elton47.github.io/CinemaPWA/assets/icons/icon-384x384.png": "329749cd6393768d3131ed6304c136b1ca05f2fd",
+    "https://elton47.github.io/CinemaPWA/assets/icons/icon-512x512.png": "559d9c4318b45a1f2b10596bbb4c960fe521dbcc",
+    "https://elton47.github.io/CinemaPWA/assets/icons/icon-72x72.png": "c457e56089a36952cd67156f9996bc4ce54a5ed9",
+    "https://elton47.github.io/CinemaPWA/assets/icons/icon-96x96.png": "3914125a4b445bf111c5627875fc190f560daa41",
+    "https://elton47.github.io/CinemaPWA/assets/scss/_grid.scss": "a9df3f8a3d462fe1925bce31dd3f9beecd9e5f2f",
+    "https://elton47.github.io/CinemaPWA/favicon.ico": "84161b857f5c547e3699ddfbffc6d8d737542e01",
+    "https://elton47.github.io/CinemaPWA/index.html": "03aac2744852e69e5ace83d9e5a856087bf8b5d6",
+    "https://elton47.github.io/CinemaPWA/main.81ee12e4f124e9fe2cc8.js": "c26d90191398db92f8d1fdd040b0e117b5a40369",
+    "https://elton47.github.io/CinemaPWA/polyfills.6f090078fccd1979aaaa.js": "66795e05235a55556f28ed30880e228cdab11b48",
+    "https://elton47.github.io/CinemaPWA/runtime.1abbfbcde7d247aaee04.js": "509b06c579cb1811f2bc2bd4c0cb5ce87c0c8192",
+    "https://elton47.github.io/CinemaPWA/styles.01a5d86a21050fa93e71.css": "de212e2dbf0eeebd5b72873601ee9f3624f297f1"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ]
+}
